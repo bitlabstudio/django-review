@@ -1,11 +1,16 @@
 """Admin classes for the review app."""
-# from django.contrib import admin
+from django.contrib import admin
 
-# from . import models
+from . import models
 
 
-# class YourModelAdmin(admin.ModelAdmin):
-#    list_display = ['some', 'fields', ]
-#    search_fields = ['some', 'fieds', ]
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ['reviewed_item', 'user', 'language', 'creation_date']
 
-# admin.site.register(models.YourModel, YourModelAdmin)
+
+class ReviewExtraInfoAdmin(admin.ModelAdmin):
+    list_display = ['type', 'review', 'content_object']
+
+
+admin.site.register(models.Review, ReviewAdmin)
+admin.site.register(models.ReviewExtraInfo, ReviewExtraInfoAdmin)

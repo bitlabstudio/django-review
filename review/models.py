@@ -2,7 +2,7 @@
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext, ugettext_lazy as _
 
 
 class Review(models.Model):
@@ -52,7 +52,7 @@ class Review(models.Model):
         if self.user:
             user = self.user.email
         else:
-            user = _('Anonymous')
+            user = ugettext('Anonymous')
         return '{} - {}'.format(self.reviewed_item, user)
 
 
