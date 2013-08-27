@@ -54,3 +54,33 @@ class Review(models.Model):
         else:
             user = _('Anonymous')
         return '{} - {}'.format(self.reviewed_item, user)
+
+
+class ReviewExtraInfo(models.Model):
+    """
+    Model to add any extra information to a review.
+
+    :type: Callable type of the extra info.
+    :review: Related review.
+    :content_object: The related object that stores this extra information.
+
+    """
+    type = models.CharField(
+        max_length=256,
+        verbose_name=_('Type'),
+    )
+    review = models.ForeignKey(
+        'review.Review',
+        verbose_name=_('Review'),
+    )
+
+    # GFK 'content_object'
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        ordering = ['type']
+
+    def __unicode__(self):
+        return '{} - {}'.format(self.review, self.type)
