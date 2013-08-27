@@ -1,10 +1,13 @@
 """Tests for the models of the review app."""
 from django.test import TestCase
 
-# from .factories import YourModelFactory
+from .factories import ReviewFactory
 
 
-class DummyTestCase(TestCase):
-    """Sample test case to show that `python setup.py test` works."""
-    def test_something(self):
-        self.assertTrue(True)
+class ReviewTestCase(TestCase):
+    def setUp(self):
+        self.review = ReviewFactory()
+
+    def test_instance(self):
+        self.assertTrue(self.review.pk, msg=(
+            'Review model should have been created.'))

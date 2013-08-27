@@ -1,10 +1,11 @@
 django-nose
 coverage
 django-coverage
-django-jasmine
 ipdb
 flake8
 fabric
-factory_boy
+factory-boy
 mock
-selenium
+django-user-media==0.9
+Pillow==2.1.0
+django-libs==1.16
