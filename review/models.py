@@ -49,11 +49,12 @@ class Review(models.Model):
         ordering = ['-creation_date']
 
     def __unicode__(self):
+        return '{} - {}'.format(self.reviewed_item, self.get_user())
+
+    def get_user(self):
         if self.user:
-            user = self.user.email
-        else:
-            user = ugettext('Anonymous')
-        return '{} - {}'.format(self.reviewed_item, user)
+            return self.user.email
+        return ugettext('Anonymous')
 
 
 class ReviewExtraInfo(models.Model):

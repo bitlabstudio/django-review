@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block main %}
+    <h1>{{ object }}</h1>
+    <h2>{% trans "Review for:" %} {{ object.reviewed_item }} ({{ object.creation_date|date:"SHORT_DATETIME_FORMAT" }})</h2>
+    {% if object.content %}
+        <h3>{{ object.get_user }} {% trans "wrote" %}:</h3>
+        <p>{{ object.content }}</p>
+    {% else %}
+        <p>{% blocktrans with user=object.get_user %}{{ user }} reviewed without description.{% endblocktrans %}</p>
+    {% endif %}
+{% endblock %}

@@ -48,8 +48,33 @@ Don't forget to migrate your database
 Usage
 -----
 
-TODO: Describe usage or point to docs. Also describe available settings and
-templatetags.
+TODO: Describe usage or point to docs.
+
+
+Settings
+--------
+
+REVIEW_ALLOW_ANONYMOUS
+++++++++++++++++++++++
+
+Allows anonymous review postings, if set to ``True``.
+
+
+REVIEW_AVOID_MULTIPLE_REVIEWS
++++++++++++++++++++++++++++++
+
+Avoids multiple reviews by one user, if set to ``True``.
+
+
+REVIEW_PERMISSION_FUNCTION
+++++++++++++++++++++++++++
+
+Custom function to check the user's permission. Use a function and note that
+the user is the only parameter.
+
+.. code-block:: python
+
+    REVIEW_PERMISSION_FUNCTION = lambda u: u.get_profile().has_permission()
 
 
 Contribute
