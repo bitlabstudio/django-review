@@ -5,6 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import ugettext, ugettext_lazy as _
 
+from django_libs.models_mixins import SimpleTranslationMixin
+
 
 class Review(models.Model):
     """
@@ -88,7 +90,7 @@ class ReviewExtraInfo(models.Model):
         return '{} - {}'.format(self.review, self.type)
 
 
-class VotingCategory(models.Model):
+class VotingCategory(SimpleTranslationMixin, models.Model):
     """Represents a voting category."""
     def __unicode__(self):
         return self.get_translation().name
@@ -109,6 +111,9 @@ class VotingCategoryTranslation(models.Model):
     # simple-translation fields
     category = models.ForeignKey(VotingCategory)
     language = models.CharField(max_length=2, choices=settings.LANGUAGES)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Voting(models.Model):

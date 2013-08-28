@@ -54,6 +54,15 @@ TODO: Describe usage or point to docs.
 Settings
 --------
 
+Default behaviour:
+
+* Users can vote form 0 to 5
+* Only authenticated users can post a review
+* Users can post multiple reviews on one object
+
+If you want to change this behaviour, or if you like to add some more
+permission checks, read on.
+
 REVIEW_VOTE_CHOICES
 +++++++++++++++++++
 

@@ -1,8 +1,9 @@
 """Forms for the ``review`` app."""
 from django import forms
+from django.conf import settings
 from django.utils.translation import get_language
 
-from .models import Review
+from .models import Review, Voting, VotingCategory
 
 
 class ReviewForm(forms.ModelForm):
@@ -10,13 +11,29 @@ class ReviewForm(forms.ModelForm):
         self.user = user
         self.reviewed_item = reviewed_item
         super(ReviewForm, self).__init__(*args, **kwargs)
+        # Dynamically add fields for each voting category
+        for category in VotingCategory.objects.all():
+            self.fields['category_{}'.format(category.pk)] = forms.ChoiceField(
+                choices=getattr(settings, 'REVIEW_VOTE_CHOICES',
+                                Voting.vote_choices),
+                label=category.get_translation().name,
+            )
 
     def save(self, *args, **kwargs):
         if not self.instance.pk:
             self.instance.user = self.user
             self.instance.reviewed_item = self.reviewed_item
             self.instance.language = get_language()
-        return super(ReviewForm, self).save(*args, **kwargs)
+        self.instance = super(ReviewForm, self).save(*args, **kwargs)
+        for field in self.fields:
+            if field.startswith('category_'):
+                Voting.objects.get_or_create(
+                    vote=self.cleaned_data[field],
+                    review=self.instance,
+                    category=VotingCategory.objects.get(
+                        pk=field.replace('category_', '')),
+                )
+        return self.instance
 
     class Meta:
         model = Review

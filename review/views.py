@@ -53,10 +53,10 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
             # Check, if user has already reviewed this item
             if getattr(settings, 'REVIEW_AVOID_MULTIPLE_REVIEWS', False):
                 try:
-                    old_review = Review.objects.get(
+                    old_review = Review.objects.filter(
                         user=request.user, content_type=self.content_type,
-                        object_id=kwargs.get('object_id'))
-                except Review.DoesNotExist:
+                        object_id=kwargs.get('object_id'))[0]
+                except IndexError:
                     pass
                 else:
                     return HttpResponseRedirect(
