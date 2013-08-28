@@ -24,13 +24,13 @@ class ReviewTestCase(TestCase):
         self.assertEqual(self.review.get_user(), self.user.email, msg=(
             'Should return a user\'s email.'))
 
-    def test_get_average_voting(self):
-        self.assertFalse(self.review.get_average_voting(), msg=(
-            'If there are no votings, it should return False.'))
-        factories.VotingFactory(review=self.review, vote='2')
-        factories.VotingFactory(review=self.review, vote='4')
-        self.assertEqual(self.review.get_average_voting(), 3, msg=(
-            'Should return the average voting value.'))
+    def test_get_average_rating(self):
+        self.assertFalse(self.review.get_average_rating(), msg=(
+            'If there are no ratings, it should return False.'))
+        factories.RatingFactory(review=self.review, rating='2')
+        factories.RatingFactory(review=self.review, rating='4')
+        self.assertEqual(self.review.get_average_rating(), 3, msg=(
+            'Should return the average rating value.'))
 
 
 class ReviewExtraInfoTestCase(TestCase):
@@ -44,23 +44,23 @@ class ReviewExtraInfoTestCase(TestCase):
             'Review extra info model should have been created.'))
 
 
-class VotingCategoryTestCase(TestCase):
+class RatingCategoryTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.category = factories.VotingCategoryFactory()
+        self.category = factories.RatingCategoryFactory()
 
     def test_instance(self):
         self.assertTrue(self.category.pk, msg=(
-            'Voting category model should have been created.'))
+            'Rating category model should have been created.'))
 
 
-class VotingTestCase(TestCase):
+class RatingTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.voting = factories.VotingFactory()
+        self.rating = factories.RatingFactory()
 
     def test_instance(self):
-        self.assertTrue(self.voting.pk, msg=(
-            'Voting model should have been created.'))
+        self.assertTrue(self.rating.pk, msg=(
+            'Rating model should have been created.'))

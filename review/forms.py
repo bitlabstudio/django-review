@@ -3,7 +3,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import get_language
 
-from .models import Review, Voting, VotingCategory
+from .models import Review, Rating, RatingCategory
 
 
 class ReviewForm(forms.ModelForm):
@@ -11,20 +11,20 @@ class ReviewForm(forms.ModelForm):
         self.user = user
         self.reviewed_item = reviewed_item
         super(ReviewForm, self).__init__(*args, **kwargs)
-        # Dynamically add fields for each voting category
-        for category in VotingCategory.objects.all():
+        # Dynamically add fields for each rating category
+        for category in RatingCategory.objects.all():
             self.fields['category_{}'.format(category.pk)] = forms.ChoiceField(
-                choices=getattr(settings, 'REVIEW_VOTE_CHOICES',
-                                Voting.vote_choices),
+                choices=getattr(settings, 'REVIEW_RATING_CHOICES',
+                                Rating.rating_choices),
                 label=category.get_translation().name,
             )
             if self.instance.pk:
                 try:
                     self.initial.update({
-                        'category_{}'.format(category.pk): Voting.objects.get(
-                            review=self.instance, category=category).vote,
+                        'category_{}'.format(category.pk): Rating.objects.get(
+                            review=self.instance, category=category).rating,
                     })
-                except Voting.DoesNotExist:
+                except Rating.DoesNotExist:
                     pass
 
     def save(self, *args, **kwargs):
@@ -33,16 +33,16 @@ class ReviewForm(forms.ModelForm):
             self.instance.reviewed_item = self.reviewed_item
             self.instance.language = get_language()
         self.instance = super(ReviewForm, self).save(*args, **kwargs)
-        # Update or create votings
+        # Update or create ratings
         for field in self.fields:
             if field.startswith('category_'):
-                voting, created = Voting.objects.get_or_create(
+                rating, created = Rating.objects.get_or_create(
                     review=self.instance,
-                    category=VotingCategory.objects.get(
+                    category=RatingCategory.objects.get(
                         pk=field.replace('category_', '')),
                 )
-                voting.vote = self.cleaned_data[field]
-                voting.save()
+                rating.rating = self.cleaned_data[field]
+                rating.save()
         return self.instance
 
     class Meta:

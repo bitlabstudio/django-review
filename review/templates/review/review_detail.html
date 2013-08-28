@@ -12,11 +12,11 @@
     {% else %}
         <p>{% blocktrans with user=object.get_user %}{{ user }} reviewed without description.{% endblocktrans %}</p>
     {% endif %}
-    {% if object.votings.all %}
-        <h3>{% trans "Votings" %}{% if object.get_average_voting %} ({{ object.get_average_voting }} {% trans "of" %} 5){% endif %}</h3>
+    {% if object.ratings.all %}
+        <h3>{% trans "Ratings" %}{% if object.get_average_rating %} ({{ object.get_average_rating }} {% trans "of" %} 5){% endif %}</h3>
         <ul>
-            {% for voting in object.votings.all %}
-                <li>{{ voting.category }}: {{ voting.get_vote_display }} {% trans "of" %} 5</li>
+            {% for rating in object.ratings.all %}
+                <li>{{ rating.category }}: {{ rating.get_rating_display }} {% trans "of" %} 5</li>
             {% endfor %}
         </ul>
     {% endif %}

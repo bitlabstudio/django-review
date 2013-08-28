@@ -31,29 +31,29 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'review', ['ReviewExtraInfo'])
 
-        # Adding model 'VotingCategory'
-        db.create_table(u'review_votingcategory', (
+        # Adding model 'RatingCategory'
+        db.create_table(u'review_ratingcategory', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
         ))
-        db.send_create_signal(u'review', ['VotingCategory'])
+        db.send_create_signal(u'review', ['RatingCategory'])
 
-        # Adding model 'VotingCategoryTranslation'
-        db.create_table(u'review_votingcategorytranslation', (
+        # Adding model 'RatingCategoryTranslation'
+        db.create_table(u'review_ratingcategorytranslation', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.VotingCategory'])),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.RatingCategory'])),
             ('language', self.gf('django.db.models.fields.CharField')(max_length=2)),
         ))
-        db.send_create_signal(u'review', ['VotingCategoryTranslation'])
+        db.send_create_signal(u'review', ['RatingCategoryTranslation'])
 
-        # Adding model 'Voting'
-        db.create_table(u'review_voting', (
+        # Adding model 'Rating'
+        db.create_table(u'review_rating', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('vote', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('rating', self.gf('django.db.models.fields.CharField')(max_length=20)),
             ('review', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.Review'])),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.VotingCategory'])),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.RatingCategory'])),
         ))
-        db.send_create_signal(u'review', ['Voting'])
+        db.send_create_signal(u'review', ['Rating'])
 
 
     def backwards(self, orm):
@@ -63,14 +63,14 @@ class Migration(SchemaMigration):
         # Deleting model 'ReviewExtraInfo'
         db.delete_table(u'review_reviewextrainfo')
 
-        # Deleting model 'VotingCategory'
-        db.delete_table(u'review_votingcategory')
+        # Deleting model 'RatingCategory'
+        db.delete_table(u'review_ratingcategory')
 
-        # Deleting model 'VotingCategoryTranslation'
-        db.delete_table(u'review_votingcategorytranslation')
+        # Deleting model 'RatingCategoryTranslation'
+        db.delete_table(u'review_ratingcategorytranslation')
 
-        # Deleting model 'Voting'
-        db.delete_table(u'review_voting')
+        # Deleting model 'Rating'
+        db.delete_table(u'review_rating')
 
 
     models = {
@@ -128,20 +128,20 @@ class Migration(SchemaMigration):
             'review': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.Review']"}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '256'})
         },
-        u'review.voting': {
-            'Meta': {'ordering': "['category', 'review']", 'object_name': 'Voting'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.VotingCategory']"}),
+        u'review.rating': {
+            'Meta': {'ordering': "['category', 'review']", 'object_name': 'Rating'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.RatingCategory']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'review': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.Review']"}),
-            'vote': ('django.db.models.fields.CharField', [], {'max_length': '20'})
+            'rating': ('django.db.models.fields.CharField', [], {'max_length': '20'})
         },
-        u'review.votingcategory': {
-            'Meta': {'object_name': 'VotingCategory'},
+        u'review.ratingcategory': {
+            'Meta': {'object_name': 'RatingCategory'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
-        u'review.votingcategorytranslation': {
-            'Meta': {'object_name': 'VotingCategoryTranslation'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.VotingCategory']"}),
+        u'review.ratingcategorytranslation': {
+            'Meta': {'object_name': 'RatingCategoryTranslation'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.RatingCategory']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '256'})

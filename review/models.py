@@ -66,7 +66,7 @@ class Review(models.Model):
             return self.user.email
         return ugettext('Anonymous')
 
-    def get_average_voting(self):
+    def get_average_rating(self):
         """
         Returns the average rating for all categories of this review.
 
@@ -75,9 +75,9 @@ class Review(models.Model):
         for this review.
 
         """
-        if self.votings.all():
-            return self.votings.all().aggregate(models.Avg('vote')).get(
-                'vote__avg')
+        if self.ratings.all():
+            return self.ratings.all().aggregate(models.Avg('rating')).get(
+                'rating__avg')
         return False
 
 
@@ -123,9 +123,9 @@ class ReviewExtraInfo(models.Model):
         return '{} - {}'.format(self.review, self.type)
 
 
-class VotingCategory(SimpleTranslationMixin, models.Model):
+class RatingCategory(SimpleTranslationMixin, models.Model):
     """
-    Represents a voting category.
+    Represents a rating category.
 
     If your reviews are just text based, you don't have to use this.
 
@@ -137,9 +137,9 @@ class VotingCategory(SimpleTranslationMixin, models.Model):
         return self.get_translation().name
 
 
-class VotingCategoryTranslation(models.Model):
+class RatingCategoryTranslation(models.Model):
     """
-    Represents translations of the ``VotingCategory`` model.
+    Represents translations of the ``RatingCategory`` model.
 
     :name: Name of the category.
 
@@ -150,23 +150,23 @@ class VotingCategoryTranslation(models.Model):
     )
 
     # simple-translation fields
-    category = models.ForeignKey(VotingCategory)
+    category = models.ForeignKey(RatingCategory)
     language = models.CharField(max_length=2, choices=settings.LANGUAGES)
 
     def __unicode__(self):
         return self.name
 
 
-class Voting(models.Model):
+class Rating(models.Model):
     """
-    Represents a voting for one voting category.
+    Represents a rating for one rating category.
 
-    :vote: Voting value.
-    :review: The review the voting belongs to.
-    :category: The voting category the voting belongs to.
+    :rating: Rating value.
+    :review: The review the rating belongs to.
+    :category: The rating category the rating belongs to.
 
     """
-    vote_choices = (
+    rating_choices = (
         ('1', '1'),
         ('2', '2'),
         ('3', '3'),
@@ -174,20 +174,20 @@ class Voting(models.Model):
         ('5', '5'),
     )
 
-    vote = models.CharField(
+    rating = models.CharField(
         max_length=20,
-        verbose_name=_('Vote'),
-        choices=getattr(settings, 'REVIEW_VOTE_CHOICES', vote_choices),
+        verbose_name=_('Rating'),
+        choices=getattr(settings, 'REVIEW_RATING_CHOICES', rating_choices),
     )
 
     review = models.ForeignKey(
         'review.Review',
         verbose_name=_('Review'),
-        related_name='votings',
+        related_name='ratings',
     )
 
     category = models.ForeignKey(
-        'review.VotingCategory',
+        'review.RatingCategory',
         verbose_name=_('Category'),
     )
 
@@ -195,4 +195,4 @@ class Voting(models.Model):
         ordering = ['category', 'review']
 
     def __unicode__(self):
-        return '{}/{} - {}'.format(self.category, self.review, self.vote)
+        return '{}/{} - {}'.format(self.category, self.review, self.rating)

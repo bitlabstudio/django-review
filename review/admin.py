@@ -16,4 +16,4 @@ class ReviewExtraInfoAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Review, ReviewAdmin)
 admin.site.register(models.ReviewExtraInfo, ReviewExtraInfoAdmin)
-admin.site.register(models.VotingCategory, TranslationAdmin)
+admin.site.register(models.RatingCategory, TranslationAdmin)

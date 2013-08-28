@@ -63,7 +63,7 @@ Settings
 
 Default behaviour:
 
-* Users can vote form 0 to 5
+* Users can rate form 0 to 5
 * Only authenticated users can post a review
 * Users can post multiple reviews on one object
 * Users can always update their posted reviews
@@ -71,14 +71,14 @@ Default behaviour:
 If you want to change this behaviour, or if you like to add some more
 permission checks, read on.
 
-REVIEW_VOTE_CHOICES
-+++++++++++++++++++
+REVIEW_RATING_CHOICES
++++++++++++++++++++++
 
-If you want other voting choices than 0-5, you can define a new tuple, like:
+If you want other rating choices than 0-5, you can define a new tuple, like:
 
 .. code-block:: python
 
-    REVIEW_VOTE_CHOICES = (
+    REVIEW_RATING_CHOICES = (
         ('1', 'bad'),
         ('2', 'average'),
         ('3', 'excellent'),

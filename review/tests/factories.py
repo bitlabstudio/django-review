@@ -23,28 +23,28 @@ class ReviewExtraInfoFactory(factory.DjangoModelFactory):
     content_object = factory.SubFactory(UserFactory)
 
 
-class VotingCategoryFactory(SimpleTranslationMixin, factory.Factory):
-    """Factory for the ``VotingCategory`` model."""
-    FACTORY_FOR = models.VotingCategory
+class RatingCategoryFactory(SimpleTranslationMixin, factory.Factory):
+    """Factory for the ``RatingCategory`` model."""
+    FACTORY_FOR = models.RatingCategory
 
     @staticmethod
     def _get_translation_factory_and_field():
-        return (VotingCategoryTranslationFactory, 'category')
+        return (RatingCategoryTranslationFactory, 'category')
 
 
-class VotingCategoryTranslationFactory(factory.Factory):
-    """Factory for ``VotingCategoryTranslation`` objects."""
-    FACTORY_FOR = models.VotingCategoryTranslation
+class RatingCategoryTranslationFactory(factory.Factory):
+    """Factory for ``RatingCategoryTranslation`` objects."""
+    FACTORY_FOR = models.RatingCategoryTranslation
 
-    name = 'Voting category'
-    category = factory.SubFactory(VotingCategoryFactory)
+    name = 'Rating category'
+    category = factory.SubFactory(RatingCategoryFactory)
     language = 'en'
 
 
-class VotingFactory(factory.DjangoModelFactory):
-    """Factory for the ``Voting`` model."""
-    FACTORY_FOR = models.Voting
+class RatingFactory(factory.DjangoModelFactory):
+    """Factory for the ``Rating`` model."""
+    FACTORY_FOR = models.Rating
 
-    vote = '3'
+    rating = '3'
     review = factory.SubFactory(ReviewFactory)
-    category = factory.SubFactory(VotingCategoryFactory)
+    category = factory.SubFactory(RatingCategoryFactory)

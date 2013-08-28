@@ -45,7 +45,7 @@ setup(
     long_description=read('README.rst'),
     license='The MIT License',
     platforms=['OS Independent'],
-    keywords='django, app, reusable, review, vote',
+    keywords='django, app, reusable, review, rating, voting',
     author='Daniel Kaufhold',
     author_email='daniel.kaufhold.com',
     url="https://github.com/bitmazk/django-review",
