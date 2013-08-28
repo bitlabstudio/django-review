@@ -59,6 +59,7 @@ Default behaviour:
 * Users can vote form 0 to 5
 * Only authenticated users can post a review
 * Users can post multiple reviews on one object
+* Users can always update their posted reviews
 
 If you want to change this behaviour, or if you like to add some more
 permission checks, read on.
@@ -98,6 +99,13 @@ the user is the only parameter.
 .. code-block:: python
 
     REVIEW_PERMISSION_FUNCTION = lambda u: u.get_profile().has_permission()
+
+
+REVIEW_UPDATE_PERIOD
+++++++++++++++++++++
+
+You can limit the period, in which a user is able to update old reviews.
+Make sure to use minutes, e.g. 2880 for 48 hours.
 
 
 Contribute

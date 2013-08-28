@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect
+from django.utils import timezone
 from django.views.generic import CreateView, DetailView, UpdateView
 
 from .forms import ReviewForm
@@ -87,5 +88,12 @@ class ReviewUpdateView(ReviewViewMixin, UpdateView):
         self.object = self.get_object()
         if not self.object.user or self.object.user != request.user:
             raise Http404
+        # Check, if update period is set and has ended
+        if getattr(settings, 'REVIEW_UPDATE_PERIOD', False):
+            period_end = self.object.creation_date + timezone.timedelta(
+                seconds=getattr(settings, 'REVIEW_UPDATE_PERIOD') * 60)
+            if timezone.now() > period_end:
+                return HttpResponseRedirect(
+                    reverse('review_detail', kwargs={'pk': self.object.pk}))
         self.reviewed_item = self.object.reviewed_item
         return super(ReviewUpdateView, self).dispatch(request, *args, **kwargs)

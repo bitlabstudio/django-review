@@ -2,6 +2,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.test import TestCase
+from django.utils import timezone
 
 from django_libs.tests.factories import UserFactory
 from django_libs.tests.mixins import ViewTestMixin
@@ -103,3 +104,14 @@ class ReviewUpdateViewTestCase(ViewTestMixin, TestCase):
     def test_view(self):
         self.is_not_callable(user=self.other_user)
         self.is_callable(user=self.user)
+
+        with self.settings(REVIEW_UPDATE_PERIOD=1):
+            self.is_callable(message=(
+                'Should be callable, if period hasn\'t ended yet.'))
+            self.review.creation_date = timezone.now() - timezone.timedelta(
+                seconds=120)
+            self.review.save()
+            self.is_callable(
+                and_redirects_to=reverse('review_detail', kwargs={
+                    'pk': self.review.pk}),
+                message=('Should redirect, if period has ended.'))
