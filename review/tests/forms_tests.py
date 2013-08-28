@@ -49,3 +49,12 @@ class ReviewFormTestCase(TestCase):
         self.assertEqual(Review.objects.count(), 2, msg=(
             'Another review should have been created.'))
         self.assertIsNotNone(review.user, msg=('User should be existant.'))
+
+        self.new_category = VotingCategoryFactory()
+        form = ReviewForm(instance=review, reviewed_item=self.content_object)
+        self.assertEqual(
+            form.initial.get('category_{}'.format(self.voting_category.pk)),
+            '3', msg=('The form\'s initial should contain the votings.'))
+        self.assertFalse(
+            form.initial.get('category_{}'.format(self.new_category.pk)),
+            msg=('The form\'s initial should not contain a new category.'))

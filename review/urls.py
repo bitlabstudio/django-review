@@ -6,6 +6,9 @@ from . import views
 
 urlpatterns = patterns(
     '',
+    url(r'^(?P<pk>\d+)/update/$',
+        views.ReviewUpdateView.as_view(),
+        name='review_update'),
     url(r'^(?P<pk>\d+)/$',
         views.ReviewDetailView.as_view(),
         name='review_detail'),

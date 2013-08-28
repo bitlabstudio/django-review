@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from .forms import ReviewForm
 from .models import Review
@@ -60,7 +60,7 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
                     pass
                 else:
                     return HttpResponseRedirect(
-                        reverse('review_detail', kwargs={'pk': old_review.pk}))
+                        reverse('review_update', kwargs={'pk': old_review.pk}))
             # Check the custom permission function
             has_perm = getattr(settings, 'REVIEW_PERMISSION_FUNCTION', None)
             if callable(has_perm) and not has_perm(request.user):
@@ -78,3 +78,14 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
 class ReviewDetailView(DetailView):
     """View to display a ``Review`` instance."""
     model = Review
+
+
+class ReviewUpdateView(ReviewViewMixin, UpdateView):
+    """View to update a ``Review`` instance."""
+    def dispatch(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        self.object = self.get_object()
+        if not self.object.user or self.object.user != request.user:
+            raise Http404
+        self.reviewed_item = self.object.reviewed_item
+        return super(ReviewUpdateView, self).dispatch(request, *args, **kwargs)

@@ -62,7 +62,7 @@ class ReviewCreateViewTestCase(ViewTestMixin, TestCase):
                 self.assertEqual(Review.objects.count(), 1, msg=(
                     'One review should\'ve been created.'))
             self.is_callable(
-                and_redirects_to=reverse('review_detail', kwargs={
+                and_redirects_to=reverse('review_update', kwargs={
                     'pk': Review.objects.all()[0].pk}),
                 method='post', user=self.user, message=(
                     'View should redirect, if review alreasy exists.'))
@@ -86,3 +86,20 @@ class ReviewDetailViewTestCase(ViewTestMixin, TestCase):
 
     def test_view(self):
         self.is_callable()
+
+
+class ReviewUpdateViewTestCase(ViewTestMixin, TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.other_user = UserFactory()
+        self.review = ReviewFactory(user=self.user)
+
+    def get_view_name(self):
+        return 'review_update'
+
+    def get_view_kwargs(self):
+        return {'pk': self.review.pk}
+
+    def test_view(self):
+        self.is_not_callable(user=self.other_user)
+        self.is_callable(user=self.user)

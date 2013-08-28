@@ -18,6 +18,14 @@ class ReviewForm(forms.ModelForm):
                                 Voting.vote_choices),
                 label=category.get_translation().name,
             )
+            if self.instance.pk:
+                try:
+                    self.initial.update({
+                        'category_{}'.format(category.pk): Voting.objects.get(
+                            review=self.instance, category=category).vote,
+                    })
+                except Voting.DoesNotExist:
+                    pass
 
     def save(self, *args, **kwargs):
         if not self.instance.pk:
@@ -25,6 +33,7 @@ class ReviewForm(forms.ModelForm):
             self.instance.reviewed_item = self.reviewed_item
             self.instance.language = get_language()
         self.instance = super(ReviewForm, self).save(*args, **kwargs)
+        # Update or create votings
         for field in self.fields:
             if field.startswith('category_'):
                 voting, created = Voting.objects.get_or_create(
