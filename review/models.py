@@ -115,7 +115,15 @@ class ReviewExtraInfo(models.Model):
 
 
 class VotingCategory(SimpleTranslationMixin, models.Model):
-    """Represents a voting category."""
+    """
+    Represents a voting category.
+
+    If your reviews are just text based, you don't have to use this.
+
+    This can be useful if you want to allow users to rate one or more
+    categories, like ``Food``, ``Room service``, ``Cleansines`` and so on.
+
+    """
     def __unicode__(self):
         return self.get_translation().name
 
@@ -156,6 +164,7 @@ class Voting(models.Model):
         ('4', '4'),
         ('5', '5'),
     )
+
     vote = models.CharField(
         max_length=20,
         verbose_name=_('Vote'),
