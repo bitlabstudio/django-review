@@ -48,7 +48,14 @@ Don't forget to migrate your database
 Usage
 -----
 
-TODO: Describe usage or point to docs.
+The only step you'll have to take is to link to the review views. For example,
+you created a ``Book`` model, which should be reviewed by users.
+
+Create a button and add some markup like:
+
+.. code-block:: html
+
+    <a href="{% url "review_create" content_type='book' object_id=book.pk %}">{% trans "Review this book" %}</a>
 
 
 Settings
