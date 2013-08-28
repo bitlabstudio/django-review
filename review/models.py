@@ -10,7 +10,7 @@ from django_libs.models_mixins import SimpleTranslationMixin
 
 class Review(models.Model):
     """
-    Represents a user review, which includes running text and ratings.
+    Represents a user review, which includes free text and images.
 
     :reviewed_item: Object, which is reviewed.
     :user (optional): User, which posted the rating.
@@ -30,19 +30,23 @@ class Review(models.Model):
         verbose_name=_('User'),
         blank=True, null=True,
     )
+
     content = models.TextField(
         max_length=1024,
         verbose_name=_('Content'),
         blank=True,
     )
+
     images = generic.GenericRelation(
         'user_media.UserMediaImage',
     )
+
     language = models.CharField(
         max_length=5,
         verbose_name=_('Language'),
         blank=True,
     )
+
     creation_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Creation date'),
