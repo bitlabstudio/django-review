@@ -58,6 +58,8 @@ class Review(models.Model):
     def __unicode__(self):
         return '{} - {}'.format(self.reviewed_item, self.get_user())
 
+    # TODO: Add magic to get ReviewExtraInfo content objects here
+
     def get_user(self):
         if self.user:
             return self.user.email
@@ -74,7 +76,18 @@ class ReviewExtraInfo(models.Model):
     """
     Model to add any extra information to a review.
 
-    :type: Callable type of the extra info.
+    This can be useful if you need to save more information about a reviewer
+    than just the User instance. Let's say you are building a site for theme
+    park reviews and you want to allow the user to select the weather
+    conditions for the day of his visit (which will surely influence his
+    review). This model would allow you to tie any model of your app to a
+    review.
+
+    :type: Callable type of the extra info. This should be unique per review.
+      We will soon add a hack to the Review model which allows you to get the
+      content_object of this instance from a review instance (i.e. by calling
+      ``my_review.weather_conditions.name``). So for this example you would
+      set the type to ``weather_conditions``.
     :review: Related review.
     :content_object: The related object that stores this extra information.
 
@@ -83,6 +96,7 @@ class ReviewExtraInfo(models.Model):
         max_length=256,
         verbose_name=_('Type'),
     )
+
     review = models.ForeignKey(
         'review.Review',
         verbose_name=_('Review'),
