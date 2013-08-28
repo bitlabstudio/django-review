@@ -24,6 +24,14 @@ class ReviewTestCase(TestCase):
         self.assertEqual(self.review.get_user(), self.user.email, msg=(
             'Should return a user\'s email.'))
 
+    def test_get_average_voting(self):
+        self.assertFalse(self.review.get_average_voting(), msg=(
+            'If there are no votings, it should return False.'))
+        factories.VotingFactory(review=self.review, vote='2')
+        factories.VotingFactory(review=self.review, vote='4')
+        self.assertEqual(self.review.get_average_voting(), 3, msg=(
+            'Should return the average voting value.'))
+
 
 class ReviewExtraInfoTestCase(TestCase):
     longMessage = True

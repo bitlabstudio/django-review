@@ -59,6 +59,12 @@ class Review(models.Model):
             return self.user.email
         return ugettext('Anonymous')
 
+    def get_average_voting(self):
+        if self.votings.all():
+            return self.votings.all().aggregate(models.Avg('vote')).get(
+                'vote__avg')
+        return False
+
 
 class ReviewExtraInfo(models.Model):
     """
@@ -141,6 +147,7 @@ class Voting(models.Model):
     review = models.ForeignKey(
         'review.Review',
         verbose_name=_('Review'),
+        related_name='votings',
     )
 
     category = models.ForeignKey(
