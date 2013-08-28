@@ -61,11 +61,20 @@ class Review(models.Model):
     # TODO: Add magic to get ReviewExtraInfo content objects here
 
     def get_user(self):
+        """Returns the user who wrote this review or ``Anonymous``."""
         if self.user:
             return self.user.email
         return ugettext('Anonymous')
 
     def get_average_voting(self):
+        """
+        Returns the average rating for all categories of this review.
+
+        This is useful if you have several ratings for different categories
+        like ``Service``, ``Product Quality`` and want to show a total rating
+        for this review.
+
+        """
         if self.votings.all():
             return self.votings.all().aggregate(models.Avg('vote')).get(
                 'vote__avg')
