@@ -27,12 +27,13 @@ class ReviewForm(forms.ModelForm):
         self.instance = super(ReviewForm, self).save(*args, **kwargs)
         for field in self.fields:
             if field.startswith('category_'):
-                Voting.objects.get_or_create(
-                    vote=self.cleaned_data[field],
+                voting, created = Voting.objects.get_or_create(
                     review=self.instance,
                     category=VotingCategory.objects.get(
                         pk=field.replace('category_', '')),
                 )
+                voting.vote = self.cleaned_data[field]
+                voting.save()
         return self.instance
 
     class Meta:
