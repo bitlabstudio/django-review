@@ -54,6 +54,20 @@ TODO: Describe usage or point to docs.
 Settings
 --------
 
+REVIEW_VOTE_CHOICES
++++++++++++++++++++
+
+If you want other voting choices than 0-5, you can define a new tuple, like:
+
+.. code-block:: python
+
+    REVIEW_VOTE_CHOICES = (
+        ('1', 'bad'),
+        ('2', 'average'),
+        ('3', 'excellent'),
+    )
+
+
 REVIEW_ALLOW_ANONYMOUS
 ++++++++++++++++++++++
 

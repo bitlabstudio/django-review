@@ -3,14 +3,14 @@ from django.test import TestCase
 
 from django_libs.tests.factories import UserFactory
 
-from .factories import ReviewFactory, ReviewExtraInfoFactory
+from . import factories
 
 
 class ReviewTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.review = ReviewFactory()
+        self.review = factories.ReviewFactory()
 
     def test_instance(self):
         self.assertTrue(self.review.pk, msg=(
@@ -29,8 +29,30 @@ class ReviewExtraInfoTestCase(TestCase):
     longMessage = True
 
     def setUp(self):
-        self.extra_info = ReviewExtraInfoFactory()
+        self.extra_info = factories.ReviewExtraInfoFactory()
 
     def test_instance(self):
         self.assertTrue(self.extra_info.pk, msg=(
             'Review extra info model should have been created.'))
+
+
+class VotingCategoryTestCase(TestCase):
+    longMessage = True
+
+    def setUp(self):
+        self.category = factories.VotingCategoryFactory()
+
+    def test_instance(self):
+        self.assertTrue(self.category.pk, msg=(
+            'Voting category model should have been created.'))
+
+
+class VotingTestCase(TestCase):
+    longMessage = True
+
+    def setUp(self):
+        self.voting = factories.VotingFactory()
+
+    def test_instance(self):
+        self.assertTrue(self.voting.pk, msg=(
+            'Voting model should have been created.'))

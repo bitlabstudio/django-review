@@ -1,4 +1,5 @@
 """Just an empty models file to let the testrunner recognize this as app."""
+from django.conf import settings
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -85,3 +86,65 @@ class ReviewExtraInfo(models.Model):
 
     def __unicode__(self):
         return '{} - {}'.format(self.review, self.type)
+
+
+class VotingCategory(models.Model):
+    """Represents a voting category."""
+    def __unicode__(self):
+        return self.get_translation().name
+
+
+class VotingCategoryTranslation(models.Model):
+    """
+    Represents translations of the ``VotingCategory`` model.
+
+    :name: Name of the category.
+
+    """
+    name = models.CharField(
+        max_length=256,
+        verbose_name=_('Name'),
+    )
+
+    # simple-translation fields
+    category = models.ForeignKey(VotingCategory)
+    language = models.CharField(max_length=2, choices=settings.LANGUAGES)
+
+
+class Voting(models.Model):
+    """
+    Represents a voting for one voting category.
+
+    :vote: Voting value.
+    :review: The review the voting belongs to.
+    :category: The voting category the voting belongs to.
+
+    """
+    vote_choices = (
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5'),
+    )
+    vote = models.CharField(
+        max_length=20,
+        verbose_name=_('Vote'),
+        choices=getattr(settings, 'REVIEW_VOTE_CHOICES', vote_choices),
+    )
+
+    review = models.ForeignKey(
+        'review.Review',
+        verbose_name=_('Review'),
+    )
+
+    category = models.ForeignKey(
+        'review.VotingCategory',
+        verbose_name=_('Category'),
+    )
+
+    class Meta:
+        ordering = ['category', 'review']
+
+    def __unicode__(self):
+        return '{}/{} - {}'.format(self.category, self.review, self.vote)

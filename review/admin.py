@@ -1,6 +1,8 @@
 """Admin classes for the review app."""
 from django.contrib import admin
 
+from simple_translation.admin import TranslationAdmin
+
 from . import models
 
 
@@ -14,3 +16,4 @@ class ReviewExtraInfoAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Review, ReviewAdmin)
 admin.site.register(models.ReviewExtraInfo, ReviewExtraInfoAdmin)
+admin.site.register(models.VotingCategory, TranslationAdmin)
