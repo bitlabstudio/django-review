@@ -37,7 +37,7 @@ class ReviewFormTestCase(TestCase):
             Rating.objects.all()[0].category.pk,
             self.rating_category.pk,
             msg=('The rating\'s category should be saved.'))
-        self.assertEqual(Rating.objects.all()[0].rating, '3', msg=(
+        self.assertEqual(Rating.objects.all()[0].value, '3', msg=(
             'The rating\'s value should be saved.'))
         self.assertIsNone(review.user, msg=('User should be None.'))
 

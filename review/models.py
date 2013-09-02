@@ -76,8 +76,10 @@ class Review(models.Model):
 
         """
         if self.ratings.all():
-            return self.ratings.all().aggregate(models.Avg('rating')).get(
-                'rating__avg')
+            total = 0
+            for rating in self.ratings.all():
+                total += int(rating.value)
+            return total / self.ratings.count()
         return False
 
 
@@ -174,9 +176,9 @@ class Rating(models.Model):
         ('5', '5'),
     )
 
-    rating = models.CharField(
+    value = models.CharField(
         max_length=20,
-        verbose_name=_('Rating'),
+        verbose_name=_('Value'),
         choices=getattr(settings, 'REVIEW_RATING_CHOICES', rating_choices),
     )
 
@@ -195,4 +197,4 @@ class Rating(models.Model):
         ordering = ['category', 'review']
 
     def __unicode__(self):
-        return '{}/{} - {}'.format(self.category, self.review, self.rating)
+        return '{}/{} - {}'.format(self.category, self.review, self.value)

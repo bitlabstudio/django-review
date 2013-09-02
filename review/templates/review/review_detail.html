@@ -16,7 +16,7 @@
         <h3>{% trans "Ratings" %}{% if object.get_average_rating %} ({{ object.get_average_rating }} {% trans "of" %} 5){% endif %}</h3>
         <ul>
             {% for rating in object.ratings.all %}
-                <li>{{ rating.category }}: {{ rating.get_rating_display }} {% trans "of" %} 5</li>
+                <li>{{ rating.category }}: {{ rating.get_value_display }} {% trans "of" %} 5</li>
             {% endfor %}
         </ul>
     {% endif %}

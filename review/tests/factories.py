@@ -45,6 +45,6 @@ class RatingFactory(factory.DjangoModelFactory):
     """Factory for the ``Rating`` model."""
     FACTORY_FOR = models.Rating
 
-    rating = '3'
+    value = '3'
     review = factory.SubFactory(ReviewFactory)
     category = factory.SubFactory(RatingCategoryFactory)

@@ -22,7 +22,7 @@ class ReviewForm(forms.ModelForm):
                 try:
                     self.initial.update({
                         'category_{}'.format(category.pk): Rating.objects.get(
-                            review=self.instance, category=category).rating,
+                            review=self.instance, category=category).value,
                     })
                 except Rating.DoesNotExist:
                     pass
@@ -41,7 +41,7 @@ class ReviewForm(forms.ModelForm):
                     category=RatingCategory.objects.get(
                         pk=field.replace('category_', '')),
                 )
-                rating.rating = self.cleaned_data[field]
+                rating.value = self.cleaned_data[field]
                 rating.save()
         return self.instance
 

@@ -27,8 +27,8 @@ class ReviewTestCase(TestCase):
     def test_get_average_rating(self):
         self.assertFalse(self.review.get_average_rating(), msg=(
             'If there are no ratings, it should return False.'))
-        factories.RatingFactory(review=self.review, rating='2')
-        factories.RatingFactory(review=self.review, rating='4')
+        factories.RatingFactory(review=self.review, value='2')
+        factories.RatingFactory(review=self.review, value='4')
         self.assertEqual(self.review.get_average_rating(), 3, msg=(
             'Should return the average rating value.'))
 

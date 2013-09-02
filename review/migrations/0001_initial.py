@@ -49,8 +49,8 @@ class Migration(SchemaMigration):
         # Adding model 'Rating'
         db.create_table(u'review_rating', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('rating', self.gf('django.db.models.fields.CharField')(max_length=20)),
-            ('review', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.Review'])),
+            ('value', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('review', self.gf('django.db.models.fields.related.ForeignKey')(related_name='ratings', to=orm['review.Review'])),
             ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.RatingCategory'])),
         ))
         db.send_create_signal(u'review', ['Rating'])
@@ -110,6 +110,24 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
+        u'review.rating': {
+            'Meta': {'ordering': "['category', 'review']", 'object_name': 'Rating'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.RatingCategory']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'review': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'ratings'", 'to': u"orm['review.Review']"}),
+            'value': ('django.db.models.fields.CharField', [], {'max_length': '20'})
+        },
+        u'review.ratingcategory': {
+            'Meta': {'object_name': 'RatingCategory'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'review.ratingcategorytranslation': {
+            'Meta': {'object_name': 'RatingCategoryTranslation'},
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.RatingCategory']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'language': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '256'})
+        },
         u'review.review': {
             'Meta': {'ordering': "['-creation_date']", 'object_name': 'Review'},
             'content': ('django.db.models.fields.TextField', [], {'max_length': '1024', 'blank': 'True'}),
@@ -127,24 +145,6 @@ class Migration(SchemaMigration):
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
             'review': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.Review']"}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '256'})
-        },
-        u'review.rating': {
-            'Meta': {'ordering': "['category', 'review']", 'object_name': 'Rating'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.RatingCategory']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'review': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.Review']"}),
-            'rating': ('django.db.models.fields.CharField', [], {'max_length': '20'})
-        },
-        u'review.ratingcategory': {
-            'Meta': {'object_name': 'RatingCategory'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
-        u'review.ratingcategorytranslation': {
-            'Meta': {'object_name': 'RatingCategoryTranslation'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['review.RatingCategory']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'language': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '256'})
         },
         u'user_media.usermediaimage': {
             'Meta': {'object_name': 'UserMediaImage'},
