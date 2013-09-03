@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 from django_libs.models_mixins import SimpleTranslationMixin
@@ -81,6 +82,23 @@ class Review(models.Model):
                 total += int(rating.value)
             return total / self.ratings.count()
         return False
+
+    def is_editable(self):
+        """
+        Returns True, if the time period to update this review hasn't ended
+        yet.
+
+        If the period setting has not been set, it always return True. This
+        is the general case. If the user has used this setting to define an
+        update period it returns False, if this period has expired.
+
+        """
+        if getattr(settings, 'REVIEW_UPDATE_PERIOD', False):
+            period_end = self.creation_date + timezone.timedelta(
+                seconds=getattr(settings, 'REVIEW_UPDATE_PERIOD') * 60)
+            if timezone.now() > period_end:
+                return False
+        return True
 
 
 class ReviewExtraInfo(models.Model):

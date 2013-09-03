@@ -1,5 +1,6 @@
 """Tests for the models of the review app."""
 from django.test import TestCase
+from django.utils.timezone import now, timedelta
 
 from django_libs.tests.factories import UserFactory
 
@@ -31,6 +32,17 @@ class ReviewTestCase(TestCase):
         factories.RatingFactory(review=self.review, value='4')
         self.assertEqual(self.review.get_average_rating(), 3, msg=(
             'Should return the average rating value.'))
+
+    def test_is_editable(self):
+        self.assertTrue(self.review.is_editable(), msg=(
+            'Should be editable, if period setting is not set.'))
+        with self.settings(REVIEW_UPDATE_PERIOD=1):
+            self.assertTrue(self.review.is_editable(), msg=(
+                'Should be editable, if period has not ended yet.'))
+            self.review.creation_date = now() - timedelta(days=1)
+            self.review.save()
+            self.assertFalse(self.review.is_editable(), msg=(
+                'Should return False, if period has ended.'))
 
 
 class ReviewExtraInfoTestCase(TestCase):

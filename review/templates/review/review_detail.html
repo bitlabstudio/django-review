@@ -20,4 +20,7 @@
             {% endfor %}
         </ul>
     {% endif %}
+    {% if object.user == request.user and object.is_editable %}
+        <p>{% trans "This is your own review." %} <a href="{% url "review_update" pk=review.pk %}">{% trans "Change it." %}</a></p>
+    {% endif %}
 {% endblock %}
