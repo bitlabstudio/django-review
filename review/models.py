@@ -19,6 +19,12 @@ class Review(models.Model):
     :images (optional): Review-related images.
     :language (optional): Language shortcut to filter reviews.
     :creation_date: The date and time, this review was created.
+    :average_rating: Should always be calculated and updated when the object is
+      saved. This is for improving performance and reducing db queries when
+      calculating ratings for reviewed items. Currently it gets updated at the
+      end of the save method of the ``ReviewForm``. This means that when you
+      manually save a Review via the Django admin, this field will not be
+      updated.
 
     """
     # GFK 'reviewed_item'
@@ -51,6 +57,11 @@ class Review(models.Model):
     creation_date = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_('Creation date'),
+    )
+
+    average_rating = models.FloatField(
+        verbose_name=_('Average rating'),
+        default=0,
     )
 
     class Meta:
