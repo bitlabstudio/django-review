@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+=== 0.2 ===
+
 - Added RatingAdmin
 - Added average_rating field to Review model
 
