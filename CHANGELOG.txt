@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+- Fixed form
+- Added reviewed item to permission function
+
 === 0.2 ===
 
 - Added RatingAdmin

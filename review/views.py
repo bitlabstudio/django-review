@@ -49,6 +49,13 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
         except ContentType.DoesNotExist:
             raise Http404
 
+        # Check, if reviewed item exists
+        try:
+            self.reviewed_item = self.content_type.get_object_for_this_type(
+                pk=kwargs.get('object_id'))
+        except ObjectDoesNotExist:
+            raise Http404
+
         # Check for permission
         if request.user.is_authenticated():
             # Check, if user has already reviewed this item
@@ -64,15 +71,9 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
                         reverse('review_update', kwargs={'pk': old_review.pk}))
             # Check the custom permission function
             has_perm = getattr(settings, 'REVIEW_PERMISSION_FUNCTION', None)
-            if callable(has_perm) and not has_perm(request.user):
+            if (callable(has_perm)
+                    and not has_perm(request.user, self.reviewed_item)):
                 raise Http404
-
-        # Check, if reviewed item exists
-        try:
-            self.reviewed_item = self.content_type.get_object_for_this_type(
-                pk=kwargs.get('object_id'))
-        except ObjectDoesNotExist:
-            raise Http404
         return super(ReviewCreateView, self).dispatch(request, *args, **kwargs)
 
 

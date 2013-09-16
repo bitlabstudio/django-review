@@ -50,7 +50,7 @@ class ReviewCreateViewTestCase(ViewTestMixin, TestCase):
             'View should be callable by an authenticated user.'))
 
         with self.settings(REVIEW_AVOID_MULTIPLE_REVIEWS=True):
-            has_perm = lambda u: self.user_has_perm(u)
+            has_perm = lambda u, item: self.user_has_perm(u)
             with self.settings(REVIEW_PERMISSION_FUNCTION=has_perm):
                 self.is_not_callable(method='post', user=self.user, message=(
                     'View should not be callable due to missing permissions.'))

@@ -105,7 +105,7 @@ the user is the only parameter.
 
 .. code-block:: python
 
-    REVIEW_PERMISSION_FUNCTION = lambda u: u.get_profile().has_permission()
+    REVIEW_PERMISSION_FUNCTION = lambda u, item: u.get_profile().has_permission(item)
 
 
 REVIEW_UPDATE_PERIOD
