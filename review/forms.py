@@ -44,6 +44,7 @@ class ReviewForm(forms.ModelForm):
                 rating.value = self.cleaned_data[field]
                 rating.save()
         self.instance.average_rating = self.instance.get_average_rating()
+        self.instance.save()
         return self.instance
 
     class Meta:
