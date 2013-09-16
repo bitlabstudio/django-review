@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+
+=== 0.2.1 ===
+
 - Fixed form
 - Added reviewed item to permission function
 
