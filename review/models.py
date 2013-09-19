@@ -68,7 +68,7 @@ class Review(models.Model):
         ordering = ['-creation_date']
 
     def __unicode__(self):
-        return '{} - {}'.format(self.reviewed_item, self.get_user())
+        return '{0} - {1}'.format(self.reviewed_item, self.get_user())
 
     # TODO: Add magic to get ReviewExtraInfo content objects here
 
@@ -151,7 +151,7 @@ class ReviewExtraInfo(models.Model):
         ordering = ['type']
 
     def __unicode__(self):
-        return '{} - {}'.format(self.review, self.type)
+        return '{0} - {1}'.format(self.review, self.type)
 
 
 class RatingCategory(SimpleTranslationMixin, models.Model):
@@ -226,4 +226,4 @@ class Rating(models.Model):
         ordering = ['category', 'review']
 
     def __unicode__(self):
-        return '{}/{} - {}'.format(self.category, self.review, self.value)
+        return '{0}/{1} - {2}'.format(self.category, self.review, self.value)
