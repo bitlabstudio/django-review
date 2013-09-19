@@ -20,7 +20,7 @@ class ReviewFormTestCase(TestCase):
         form = ReviewForm(reviewed_item=self.content_object)
         self.assertTrue(form, msg=('Form has been initiated.'))
 
-        data = {'category_{}'.format(self.rating_category.pk): '3'}
+        data = {'category_{0}'.format(self.rating_category.pk): '3'}
         form = ReviewForm(reviewed_item=self.content_object, data=data)
         self.assertTrue(form.is_valid(), msg=('Form should be valid.'))
 
@@ -53,8 +53,8 @@ class ReviewFormTestCase(TestCase):
         self.new_category = RatingCategoryFactory()
         form = ReviewForm(instance=review, reviewed_item=self.content_object)
         self.assertEqual(
-            form.initial.get('category_{}'.format(self.rating_category.pk)),
+            form.initial.get('category_{0}'.format(self.rating_category.pk)),
             '3', msg=('The form\'s initial should contain the ratings.'))
         self.assertFalse(
-            form.initial.get('category_{}'.format(self.new_category.pk)),
+            form.initial.get('category_{0}'.format(self.new_category.pk)),
             msg=('The form\'s initial should not contain a new category.'))

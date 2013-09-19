@@ -13,7 +13,7 @@ class ReviewForm(forms.ModelForm):
         super(ReviewForm, self).__init__(*args, **kwargs)
         # Dynamically add fields for each rating category
         for category in RatingCategory.objects.all():
-            self.fields['category_{}'.format(category.pk)] = forms.ChoiceField(
+            self.fields['category_{0}'.format(category.pk)] = forms.ChoiceField(
                 choices=getattr(settings, 'REVIEW_RATING_CHOICES',
                                 Rating.rating_choices),
                 label=category.get_translation().name,
@@ -21,7 +21,7 @@ class ReviewForm(forms.ModelForm):
             if self.instance.pk:
                 try:
                     self.initial.update({
-                        'category_{}'.format(category.pk): Rating.objects.get(
+                        'category_{0}'.format(category.pk): Rating.objects.get(
                             review=self.instance, category=category).value,
                     })
                 except Rating.DoesNotExist:
