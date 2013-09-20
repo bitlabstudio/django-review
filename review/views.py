@@ -1,4 +1,6 @@
 """Views for the review app."""
+import importlib
+
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
@@ -16,7 +18,6 @@ from .models import Review
 
 class ReviewViewMixin(object):
     model = Review
-    form_class = ReviewForm
 
     def dispatch(self, request, *args, **kwargs):
         # Check, if user needs to be logged in
@@ -25,6 +26,16 @@ class ReviewViewMixin(object):
                 request, *args, **kwargs)
         return login_required(super(ReviewViewMixin, self).dispatch)(
             request, *args, **kwargs)
+
+    def get_form_class(self):
+        if getattr(settings, 'REVIEW_CUSTOM_FORM', False):
+            app_label, class_name = settings.REVIEW_CUSTOM_FORM.rsplit('.', 1)
+            try:
+                return getattr(importlib.import_module(app_label), class_name,
+                               ReviewForm)
+            except ImportError:
+                pass
+        return ReviewForm
 
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(ReviewViewMixin, self).get_form_kwargs(*args, **kwargs)

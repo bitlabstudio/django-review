@@ -115,6 +115,19 @@ You can limit the period, in which a user is able to update old reviews.
 Make sure to use minutes, e.g. 2880 for 48 hours.
 
 
+REVIEW_CUSTOM_FORM
+++++++++++++++++++
+
+You can create your own review form (e.g. if you want to make use of the review
+extra info). Just name it.
+
+.. code-block:: python
+
+    REVIEW_CUSTOM_FORM = 'myapp.forms.MyCustomReviewForm'
+
+Take a look at the included test app to get an example.
+
+
 Contribute
 ----------
 

@@ -4,7 +4,7 @@ django-coverage
 ipdb
 flake8
 fabric
-factory-boy==2.0.1
+factory-boy==2.0.2
 mock
 django-user-media==0.9
 Pillow==2.1.0

@@ -13,7 +13,8 @@ class ReviewForm(forms.ModelForm):
         super(ReviewForm, self).__init__(*args, **kwargs)
         # Dynamically add fields for each rating category
         for category in RatingCategory.objects.all():
-            self.fields['category_{0}'.format(category.pk)] = forms.ChoiceField(
+            field_name = 'category_{0}'.format(category.pk)
+            self.fields[field_name] = forms.ChoiceField(
                 choices=getattr(settings, 'REVIEW_RATING_CHOICES',
                                 Rating.rating_choices),
                 label=category.get_translation().name,

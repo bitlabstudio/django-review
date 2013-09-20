@@ -23,7 +23,8 @@ class ReviewExtraInfoFactory(factory.DjangoModelFactory):
     content_object = factory.SubFactory(UserFactory)
 
 
-class RatingCategoryFactory(SimpleTranslationMixin, factory.Factory):
+class RatingCategoryFactory(SimpleTranslationMixin,
+                            factory.DjangoModelFactory):
     """Factory for the ``RatingCategory`` model."""
     FACTORY_FOR = models.RatingCategory
 
@@ -32,7 +33,7 @@ class RatingCategoryFactory(SimpleTranslationMixin, factory.Factory):
         return (RatingCategoryTranslationFactory, 'category')
 
 
-class RatingCategoryTranslationFactory(factory.Factory):
+class RatingCategoryTranslationFactory(factory.DjangoModelFactory):
     """Factory for ``RatingCategoryTranslation`` objects."""
     FACTORY_FOR = models.RatingCategoryTranslation
 

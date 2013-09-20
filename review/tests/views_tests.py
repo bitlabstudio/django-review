@@ -8,7 +8,8 @@ from django_libs.tests.factories import UserFactory
 from django_libs.tests.mixins import ViewTestMixin
 
 from .factories import ReviewFactory
-from ..models import Review
+from ..models import Review, ReviewExtraInfo
+from test_app.factories import WeatherConditionFactory
 
 
 class ReviewCreateViewTestCase(ViewTestMixin, TestCase):
@@ -69,6 +70,19 @@ class ReviewCreateViewTestCase(ViewTestMixin, TestCase):
                     'View should redirect, if review alreasy exists.'))
             self.assertEqual(Review.objects.count(), 1, msg=(
                 'No new review should\'ve been created.'))
+
+        with self.settings(REVIEW_CUSTOM_FORM='test_app.FooReviewForm'):
+            self.is_callable()
+
+        with self.settings(REVIEW_CUSTOM_FORM='foo.BarForm'):
+            self.is_callable()
+
+        with self.settings(
+                REVIEW_CUSTOM_FORM='test_app.forms.CustomReviewForm'):
+            data = {'weather_conditions': WeatherConditionFactory().pk}
+            self.is_callable(method='post', data=data)
+            self.assertEqual(ReviewExtraInfo.objects.count(), 1, msg=(
+                'One review extra info should\'ve been created.'))
 
         with self.settings(REVIEW_ALLOW_ANONYMOUS=True):
             self.is_callable(anonymous=True, message=(
