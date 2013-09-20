@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+=== 0.3 ===
+
+- added setting to use a custom form
 
 === 0.2.1 ===
 
