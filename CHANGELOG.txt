@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 0.4 ===
+
+- added identifier field for rating categories
+
 === 0.3 ===
 
 - added setting to use a custom form
