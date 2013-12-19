@@ -9,3 +9,4 @@ mock
 django-user-media==0.9
 Pillow==2.1.0
 django-libs==1.16
+South

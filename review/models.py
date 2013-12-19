@@ -163,7 +163,15 @@ class RatingCategory(SimpleTranslationMixin, models.Model):
     This can be useful if you want to allow users to rate one or more
     categories, like ``Food``, ``Room service``, ``Cleansines`` and so on.
 
+    :identifier: Optional identifier.
+
     """
+    identifier = models.SlugField(
+        max_length=32,
+        verbose_name=_('Identifier'),
+        blank=True,
+    )
+
     def __unicode__(self):
         return self.get_translation().name
 
