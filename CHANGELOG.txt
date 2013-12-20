@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.1 ===
+
+- Re-arranged migrations
+
 === 1.0 ===
 
 - BACKWARDS INCOMPATIBLE: Moved from simpletranslation to hvad
