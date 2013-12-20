@@ -54,6 +54,6 @@ setup(
     install_requires=[
         'django',
         'django-user-media>=0.9',
-        'simple-translation>=0.8.6',
+        'django-hvad>=0.3',
     ],
 )

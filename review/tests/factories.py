@@ -1,8 +1,7 @@
 """Factories for the review app."""
 import factory
 
-from django_libs.tests.factories import UserFactory
-from django_libs.tests.factories import SimpleTranslationMixin
+from django_libs.tests.factories import HvadFactoryMixin, UserFactory
 
 from .. import models
 
@@ -23,23 +22,12 @@ class ReviewExtraInfoFactory(factory.DjangoModelFactory):
     content_object = factory.SubFactory(UserFactory)
 
 
-class RatingCategoryFactory(SimpleTranslationMixin,
-                            factory.DjangoModelFactory):
+class RatingCategoryFactory(HvadFactoryMixin, factory.DjangoModelFactory):
     """Factory for the ``RatingCategory`` model."""
     FACTORY_FOR = models.RatingCategory
 
-    @staticmethod
-    def _get_translation_factory_and_field():
-        return (RatingCategoryTranslationFactory, 'category')
-
-
-class RatingCategoryTranslationFactory(factory.DjangoModelFactory):
-    """Factory for ``RatingCategoryTranslation`` objects."""
-    FACTORY_FOR = models.RatingCategoryTranslation
-
-    name = 'Rating category'
-    category = factory.SubFactory(RatingCategoryFactory)
-    language = 'en'
+    language_code = 'en'
+    name = factory.Sequence(lambda x: 'Rating category {}'.format(x))
 
 
 class RatingFactory(factory.DjangoModelFactory):

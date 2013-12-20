@@ -6,7 +6,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from django_libs.models_mixins import SimpleTranslationMixin
+from hvad.models import TranslatableModel, TranslatedFields
 
 
 class Review(models.Model):
@@ -154,7 +154,7 @@ class ReviewExtraInfo(models.Model):
         return '{0} - {1}'.format(self.review, self.type)
 
 
-class RatingCategory(SimpleTranslationMixin, models.Model):
+class RatingCategory(TranslatableModel):
     """
     Represents a rating category.
 
@@ -164,6 +164,7 @@ class RatingCategory(SimpleTranslationMixin, models.Model):
     categories, like ``Food``, ``Room service``, ``Cleansines`` and so on.
 
     :identifier: Optional identifier.
+    :name: Name of the category.
 
     """
     identifier = models.SlugField(
@@ -172,28 +173,12 @@ class RatingCategory(SimpleTranslationMixin, models.Model):
         blank=True,
     )
 
-    def __unicode__(self):
-        return self.get_translation().name
-
-
-class RatingCategoryTranslation(models.Model):
-    """
-    Represents translations of the ``RatingCategory`` model.
-
-    :name: Name of the category.
-
-    """
-    name = models.CharField(
-        max_length=256,
-        verbose_name=_('Name'),
+    translations = TranslatedFields(
+        name=models.CharField(max_length=256),
     )
 
-    # simple-translation fields
-    category = models.ForeignKey(RatingCategory)
-    language = models.CharField(max_length=2, choices=settings.LANGUAGES)
-
     def __unicode__(self):
-        return self.name
+        return self.lazy_translation_getter('name', 'Untranslated')
 
 
 class Rating(models.Model):

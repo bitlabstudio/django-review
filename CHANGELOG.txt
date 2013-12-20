@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+- BACKWARDS INCOMPATIBLE: Moved from simpletranslation to hvad
+
 === 0.4 ===
 
 - added identifier field for rating categories
