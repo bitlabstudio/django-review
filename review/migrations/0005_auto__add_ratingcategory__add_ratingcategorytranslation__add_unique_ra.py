@@ -9,53 +9,43 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'RatingCategoryTranslation.category'
-        db.delete_column(u'review_ratingcategorytranslation', 'category_id')
+        # Adding model 'RatingCategory'
+        db.create_table(u'review_ratingcategory', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('identifier', self.gf('django.db.models.fields.SlugField')(max_length=32, blank=True)),
+        ))
+        db.send_create_signal(u'review', ['RatingCategory'])
 
-        # Deleting field 'RatingCategoryTranslation.language'
-        db.delete_column(u'review_ratingcategorytranslation', 'language')
-
-        # Adding field 'RatingCategoryTranslation.language_code'
-        db.add_column(u'review_ratingcategory_translation', 'language_code',
-                      self.gf('django.db.models.fields.CharField')(default='en', max_length=15, db_index=True),
-                      keep_default=False)
-
-        # Adding field 'RatingCategoryTranslation.master'
-        db.add_column(u'review_ratingcategory_translation', 'master',
-                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='translations', null=True, to=orm['review.RatingCategory']),
-                      keep_default=False)
+        # Adding model 'RatingCategoryTranslation'
+        db.create_table(u'review_ratingcategory_translation', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('language_code', self.gf('django.db.models.fields.CharField')(max_length=15, db_index=True)),
+            ('master', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translations', null=True, to=orm['review.RatingCategory'])),
+        ))
+        db.send_create_signal(u'review', ['RatingCategoryTranslation'])
 
         # Adding unique constraint on 'RatingCategoryTranslation', fields ['language_code', 'master']
         db.create_unique(u'review_ratingcategory_translation', ['language_code', 'master_id'])
+
+        # Adding field 'Rating.category'
+        db.add_column(u'review_rating', 'category',
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['review.RatingCategory']),
+                      keep_default=False)
 
 
     def backwards(self, orm):
         # Removing unique constraint on 'RatingCategoryTranslation', fields ['language_code', 'master']
         db.delete_unique(u'review_ratingcategory_translation', ['language_code', 'master_id'])
 
+        # Deleting model 'RatingCategory'
+        db.delete_table(u'review_ratingcategory')
 
-        # User chose to not deal with backwards NULL issues for 'RatingCategoryTranslation.category'
-        raise RuntimeError("Cannot reverse this migration. 'RatingCategoryTranslation.category' and its values cannot be restored.")
+        # Deleting model 'RatingCategoryTranslation'
+        db.delete_table(u'review_ratingcategory_translation')
 
-        # The following code is provided here to aid in writing a correct migration        # Adding field 'RatingCategoryTranslation.category'
-        db.add_column(u'review_ratingcategorytranslation', 'category',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['review.RatingCategory']),
-                      keep_default=False)
-
-
-        # User chose to not deal with backwards NULL issues for 'RatingCategoryTranslation.language'
-        raise RuntimeError("Cannot reverse this migration. 'RatingCategoryTranslation.language' and its values cannot be restored.")
-
-        # The following code is provided here to aid in writing a correct migration        # Adding field 'RatingCategoryTranslation.language'
-        db.add_column(u'review_ratingcategorytranslation', 'language',
-                      self.gf('django.db.models.fields.CharField')(max_length=2),
-                      keep_default=False)
-
-        # Deleting field 'RatingCategoryTranslation.language_code'
-        db.delete_column(u'review_ratingcategory_translation', 'language_code')
-
-        # Deleting field 'RatingCategoryTranslation.master'
-        db.delete_column(u'review_ratingcategory_translation', 'master_id')
+        # Deleting field 'Rating.category'
+        db.delete_column(u'review_rating', 'category_id')
 
 
     models = {
