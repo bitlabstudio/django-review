@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.2.1 ===
+
+- Added success URL setting for delete view
+
 === 1.2 ===
 
 - Added review delete view

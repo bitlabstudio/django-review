@@ -119,4 +119,5 @@ class ReviewUpdateView(ReviewViewMixin, ReviewUpdateMixin, UpdateView):
 
 class ReviewDeleteView(ReviewViewMixin, ReviewUpdateMixin, DeleteView):
     """View to delete a ``Review`` instance."""
-    pass
+    def get_success_url(self):
+        return reverse(getattr(settings, 'REVIEW_SUCCESS_URL', False))

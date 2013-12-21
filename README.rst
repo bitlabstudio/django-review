@@ -91,6 +91,13 @@ REVIEW_ALLOW_ANONYMOUS
 Allows anonymous review postings, if set to ``True``.
 
 
+REVIEW_SUCCESS_URL
+++++++++++++++++++
+
+Name of the URL to redirect to after deleting a review instance. This could
+be your review listing, for example.
+
+
 REVIEW_AVOID_MULTIPLE_REVIEWS
 +++++++++++++++++++++++++++++
 
