@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import ObjectDoesNotExist
 from django.http import Http404, HttpResponseRedirect
 from django.utils import timezone
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 
 from .forms import ReviewForm
 from .models import Review
@@ -46,6 +46,25 @@ class ReviewViewMixin(object):
 
     def get_success_url(self):
         return reverse('review_detail', kwargs={'pk': self.object.pk})
+
+
+class ReviewUpdateMixin(object):
+    """Mixin to provide update functions for a ``Review`` instance."""
+    def dispatch(self, request, *args, **kwargs):
+        self.kwargs = kwargs
+        self.object = self.get_object()
+        if not self.object.user or self.object.user != request.user:
+            raise Http404
+        # Check, if update period is set and has ended
+        if getattr(settings, 'REVIEW_UPDATE_PERIOD', False):
+            period_end = self.object.creation_date + timezone.timedelta(
+                seconds=getattr(settings, 'REVIEW_UPDATE_PERIOD') * 60)
+            if timezone.now() > period_end:
+                return HttpResponseRedirect(
+                    reverse('review_detail', kwargs={'pk': self.object.pk}))
+        self.reviewed_item = self.object.reviewed_item
+        return super(ReviewUpdateMixin, self).dispatch(
+            request, *args, **kwargs)
 
 
 #------ MODEL VIEWS ------#
@@ -93,19 +112,11 @@ class ReviewDetailView(DetailView):
     model = Review
 
 
-class ReviewUpdateView(ReviewViewMixin, UpdateView):
+class ReviewUpdateView(ReviewViewMixin, ReviewUpdateMixin, UpdateView):
     """View to update a ``Review`` instance."""
-    def dispatch(self, request, *args, **kwargs):
-        self.kwargs = kwargs
-        self.object = self.get_object()
-        if not self.object.user or self.object.user != request.user:
-            raise Http404
-        # Check, if update period is set and has ended
-        if getattr(settings, 'REVIEW_UPDATE_PERIOD', False):
-            period_end = self.object.creation_date + timezone.timedelta(
-                seconds=getattr(settings, 'REVIEW_UPDATE_PERIOD') * 60)
-            if timezone.now() > period_end:
-                return HttpResponseRedirect(
-                    reverse('review_detail', kwargs={'pk': self.object.pk}))
-        self.reviewed_item = self.object.reviewed_item
-        return super(ReviewUpdateView, self).dispatch(request, *args, **kwargs)
+    pass
+
+
+class ReviewDeleteView(ReviewViewMixin, ReviewUpdateMixin, DeleteView):
+    """View to delete a ``Review`` instance."""
+    pass

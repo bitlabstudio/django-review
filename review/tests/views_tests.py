@@ -129,3 +129,18 @@ class ReviewUpdateViewTestCase(ViewTestMixin, TestCase):
                 and_redirects_to=reverse('review_detail', kwargs={
                     'pk': self.review.pk}),
                 message=('Should redirect, if period has ended.'))
+
+
+class ReviewDeleteViewTestCase(ViewTestMixin, TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.review = ReviewFactory(user=self.user)
+
+    def get_view_name(self):
+        return 'review_delete'
+
+    def get_view_kwargs(self):
+        return {'pk': self.review.pk}
+
+    def test_view(self):
+        self.is_callable(user=self.user)

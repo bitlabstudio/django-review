@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Delete review" %}{% endblock %}
+
+{% block main %}
+    <h1>{% trans "Delete review" %}</h1>
+    <form method="post" action=".">
+        {% csrf_token %}
+        <input type="submit" value="{% trans "Delete" %}" />
+    </form>
+{% endblock %}
