@@ -84,6 +84,10 @@ class ReviewCreateViewTestCase(ViewTestMixin, TestCase):
             self.assertEqual(ReviewExtraInfo.objects.count(), 1, msg=(
                 'One review extra info should\'ve been created.'))
 
+        with self.settings(REVIEW_UPDATE_SUCCESS_URL='review_list'):
+            self.is_callable(method='post', data=data,
+                             and_redirects_to=reverse('review_list'))
+
         with self.settings(REVIEW_ALLOW_ANONYMOUS=True):
             self.is_callable(anonymous=True, message=(
                 'View should be callable as an anonymous user.'))
