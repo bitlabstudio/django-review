@@ -25,6 +25,7 @@ class Review(models.Model):
       end of the save method of the ``ReviewForm``. This means that when you
       manually save a Review via the Django admin, this field will not be
       updated.
+    :extra_item: Optional object, which should be attached to the review.
 
     """
     # GFK 'reviewed_item'
@@ -63,6 +64,16 @@ class Review(models.Model):
         verbose_name=_('Average rating'),
         default=0,
     )
+
+    # GFK 'extra_item'
+    extra_content_type = models.ForeignKey(
+        ContentType,
+        related_name='reviews_attached',
+        null=True, blank=True,
+    )
+    extra_object_id = models.PositiveIntegerField(null=True, blank=True)
+    extra_item = generic.GenericForeignKey(
+        'extra_content_type', 'extra_object_id')
 
     class Meta:
         ordering = ['-creation_date']

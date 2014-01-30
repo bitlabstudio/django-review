@@ -147,4 +147,7 @@ class ReviewDeleteViewTestCase(ViewTestMixin, TestCase):
         return {'pk': self.review.pk}
 
     def test_view(self):
-        self.is_callable(user=self.user)
+        self.is_callable(user=self.user, method='post')
+        self.review = ReviewFactory(user=self.user)
+        with self.settings(REVIEW_DELETION_SUCCESS_URL='review_list'):
+            self.is_callable(user=self.user, method='post')

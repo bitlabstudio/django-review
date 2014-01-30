@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+- Added optional extra content object to review model
+
 === 1.3 ===
 
 - Added optional success URL setting for update and creation views
