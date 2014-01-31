@@ -143,6 +143,9 @@ extra info). Just name it.
 
 Take a look at the included test app to get an example.
 
+You can also use a custom form to add another content object to the review
+instance.
+
 
 Contribute
 ----------

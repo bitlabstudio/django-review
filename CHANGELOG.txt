@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+=== 1.4 ===
+
 - Added optional extra content object to review model
 
 === 1.3 ===
