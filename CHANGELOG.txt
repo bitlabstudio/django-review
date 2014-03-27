@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+- added RatingCategoryChoice model and added counts_for_average to
+  RatingCategory.
+
 === 1.4 ===
 
 - Added optional extra content object to review model

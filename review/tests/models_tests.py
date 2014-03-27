@@ -67,6 +67,16 @@ class RatingCategoryTestCase(TestCase):
             'Rating category model should have been created.'))
 
 
+class RatingCategoryChoiceTestCase(TestCase):
+    """Tests for the ``RatingCategoryChoice`` model class."""
+    longMessage = True
+
+    def test_instantiation(self):
+        """Test instantiation of the ``RatingCategoryChoice`` model."""
+        ratingcategorychoice = factories.RatingCategoryChoiceFactory()
+        self.assertTrue(ratingcategorychoice.pk)
+
+
 class RatingTestCase(TestCase):
     longMessage = True
 

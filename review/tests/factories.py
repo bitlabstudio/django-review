@@ -30,6 +30,16 @@ class RatingCategoryFactory(HvadFactoryMixin, factory.DjangoModelFactory):
     name = factory.Sequence(lambda x: 'Rating category {}'.format(x))
 
 
+class RatingCategoryChoiceFactory(HvadFactoryMixin,
+                                  factory.DjangoModelFactory):
+    """Factory for the ``RatingCategoryChoice`` model."""
+    FACTORY_FOR = models.RatingCategoryChoice
+
+    ratingcategory = factory.SubFactory(RatingCategoryFactory)
+    label = factory.Sequence(lambda n: 'label {0}'.format(n))
+    value = factory.Sequence(lambda n: n)
+
+
 class RatingFactory(factory.DjangoModelFactory):
     """Factory for the ``Rating`` model."""
     FACTORY_FOR = models.Rating

@@ -176,6 +176,8 @@ class RatingCategory(TranslatableModel):
 
     :identifier: Optional identifier.
     :name: Name of the category.
+    :counts_for_average: If True, the ratings of this category will be used to
+      calculate the average rating. Default is True.
 
     """
     identifier = models.SlugField(
@@ -184,12 +186,51 @@ class RatingCategory(TranslatableModel):
         blank=True,
     )
 
+    counts_for_average = models.BooleanField(
+        verbose_name=_('Counts for average rating'),
+        default=True,
+    )
+
     translations = TranslatedFields(
         name=models.CharField(max_length=256),
     )
 
     def __unicode__(self):
         return self.lazy_translation_getter('name', 'Untranslated')
+
+
+class RatingCategoryChoice(TranslatableModel):
+    """
+    Defines an optional choice for a `RatingCategory`.
+
+    If `RatingChoice` exists, the choices will not be loaded from the settings.
+
+    :label: The label that is displayed for this choice.
+    :ratingcategory: The `RatingCategory` this choice belongs to.
+    :value: The value that this choice has. If a `RatingChoice` with value=None
+      is created and chosen by the user, this category is not taken into
+      account when the average is calculated.
+
+    """
+    ratingcategory = models.ForeignKey(
+        RatingCategory,
+        verbose_name=_('Rating category'),
+    )
+
+    value = models.PositiveIntegerField(
+        verbose_name=_('Value'),
+        blank=True, null=True,
+    )
+
+    translations = TranslatedFields(
+        label=models.CharField(
+            verbose_name=_('Label'),
+            max_length=128,
+        ),
+    )
+
+    def __unicode__(self):
+        return self.lazy_translation_getter('label', self.category.identifier)
 
 
 class Rating(models.Model):
