@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+
+=== 1.5 ===
+
+- re-implemented average calculation
 - added total_review_average template tag
 - added RatingCategoryChoice model and added counts_for_average to
   RatingCategory.
