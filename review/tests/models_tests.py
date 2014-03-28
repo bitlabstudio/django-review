@@ -33,6 +33,71 @@ class ReviewTestCase(TestCase):
         self.assertEqual(self.review.get_average_rating(), 3, msg=(
             'Should return the average rating value.'))
 
+        factories.RatingFactory(review=self.review, value=None)
+        factories.RatingFactory(category__counts_for_average=False,
+                                review=self.review, value=0.0)
+        self.assertEqual(self.review.get_average_rating(), 3, msg=(
+            'Should return the average rating value and exclude the nullified'
+            ' ones.'))
+
+    def test_get_average_rating_with_custom_choices(self):
+        self.assertFalse(self.review.get_average_rating(), msg=(
+            'If there are no ratings, it should return False.'))
+        rating1 = factories.RatingFactory(review=self.review, value='4')
+        # we create choices to simulate, that the previous value was the max
+        for i in range(0, 5):
+            factories.RatingCategoryChoiceFactory(
+                ratingcategory=rating1.category, value=i)
+        rating2 = factories.RatingFactory(review=self.review, value='6')
+        # we create choices to simulate, that the previous value was the max
+        for i in range(0, 7):
+            factories.RatingCategoryChoiceFactory(
+                ratingcategory=rating2.category, value=i)
+        # testing the absolute max voting
+        self.assertEqual(self.review.get_average_rating(6), 6, msg=(
+            'Should return the average rating value.'))
+        self.assertEqual(self.review.get_average_rating(4), 4, msg=(
+            'Should return the average rating value.'))
+        self.assertEqual(self.review.get_average_rating(100), 100, msg=(
+            'Should return the average rating value.'))
+
+        # these ratings should not change results and should just be ignored
+        factories.RatingFactory(
+            category=rating2.category, review=self.review, value=None)
+        factories.RatingFactory(review=self.review, value=None)
+        self.assertEqual(self.review.get_average_rating(6), 6, msg=(
+            'Should return the average rating value.'))
+        self.assertEqual(self.review.get_average_rating(4), 4, msg=(
+            'Should return the average rating value.'))
+        self.assertEqual(self.review.get_average_rating(100), 100, msg=(
+            'Should return the average rating value.'))
+
+        # altering the ratings to get a very low voting
+        rating1.value = '1'
+        rating1.save()
+        rating2.value = '1'
+        rating2.save()
+        self.assertEqual(self.review.get_average_rating(6), 1.1666666666666667,
+                         msg=('Should return the average rating value.'))
+        self.assertEqual(self.review.get_average_rating(4), 0.7777777777777777,
+                         msg=('Should return the average rating value.'))
+        self.assertEqual(
+            self.review.get_average_rating(100),
+            19.444444444444446, msg=(
+                'Should return the average rating value.'))
+
+        # and finally the lowest possible voting
+        rating1.value = '0'
+        rating1.save()
+        rating2.value = '0'
+        rating2.save()
+        self.assertEqual(self.review.get_average_rating(6), 0,
+                         msg=('Should return the average rating value.'))
+        self.assertEqual(self.review.get_average_rating(4), 0,
+                         msg=('Should return the average rating value.'))
+        self.assertEqual(self.review.get_average_rating(100), 0,
+                         msg=('Should return the average rating value.'))
+
     def test_is_editable(self):
         self.assertTrue(self.review.is_editable(), msg=(
             'Should be editable, if period setting is not set.'))

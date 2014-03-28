@@ -1,5 +1,9 @@
 """Settings that need to be set in order to run the tests."""
 import os
+import logging
+
+
+logging.getLogger("factory").setLevel(logging.WARN)
 
 DEBUG = True
 

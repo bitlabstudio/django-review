@@ -1,5 +1,6 @@
 === (ongoing) ===
 
+- added total_review_average template tag
 - added RatingCategoryChoice model and added counts_for_average to
   RatingCategory.
 

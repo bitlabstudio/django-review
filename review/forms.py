@@ -16,7 +16,7 @@ class ReviewForm(forms.ModelForm):
             field_name = 'category_{0}'.format(category.pk)
             self.fields[field_name] = forms.ChoiceField(
                 choices=getattr(settings, 'REVIEW_RATING_CHOICES',
-                                Rating.rating_choices),
+                                category.get_choices()),
                 label=category.__unicode__(),
             )
             if self.instance.pk:

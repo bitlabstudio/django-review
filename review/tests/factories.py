@@ -37,7 +37,7 @@ class RatingCategoryChoiceFactory(HvadFactoryMixin,
 
     ratingcategory = factory.SubFactory(RatingCategoryFactory)
     label = factory.Sequence(lambda n: 'label {0}'.format(n))
-    value = factory.Sequence(lambda n: n)
+    value = factory.Sequence(lambda n: str(n))
 
 
 class RatingFactory(factory.DjangoModelFactory):

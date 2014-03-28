@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from django_libs.tests.factories import UserFactory
 
-from .factories import RatingCategoryFactory
+from .factories import RatingCategoryFactory, RatingCategoryChoiceFactory
 from ..forms import ReviewForm
 from ..models import Review, Rating
 
@@ -27,8 +27,6 @@ class ReviewFormTestCase(TestCase):
         review = form.save()
         self.assertEqual(Review.objects.count(), 1, msg=(
             'One review should have been created.'))
-        self.assertEqual(Rating.objects.count(), 1, msg=(
-            'One rating should\'ve been created.'))
         self.assertEqual(
             Rating.objects.all()[0].review,
             Review.objects.all()[0],
@@ -58,3 +56,53 @@ class ReviewFormTestCase(TestCase):
         self.assertFalse(
             form.initial.get('category_{0}'.format(self.new_category.pk)),
             msg=('The form\'s initial should not contain a new category.'))
+
+    def test_form_with_custom_choices(self):
+        # Create custom choices
+        choices = []
+        expected_choices = []
+        for i in range(1, 4):
+            choices.append(RatingCategoryChoiceFactory(
+                ratingcategory=self.rating_category,
+                value=i, label=str(i)))
+            expected_choices.append((unicode(i), unicode(i)))
+
+        form = ReviewForm(reviewed_item=self.content_object)
+        self.assertTrue(form, msg=('Form has been initiated.'))
+        field_name = 'category_{0}'.format(self.rating_category.pk)
+        self.assertTrue(form[field_name], msg='The field was added')
+        self.assertEqual(form[field_name].field.choices, expected_choices,
+                         msg=('The field choices were not added correctly from'
+                              ' the RatingCategegoryChoice instances.'))
+
+        data = {'category_{0}'.format(self.rating_category.pk): '5'}
+        form = ReviewForm(reviewed_item=self.content_object, data=data)
+        self.assertFalse(form.is_valid(), msg=(
+            'When assigning a higher value, than there are'
+            ' RatingCategoryChoice objects, the form should not be valid.'))
+
+        data = {'category_{0}'.format(self.rating_category.pk): '3'}
+        form = ReviewForm(reviewed_item=self.content_object, data=data)
+        self.assertTrue(form.is_valid(), msg=(
+            'Even when answering without value and nullifying the category,'
+            ' the form should be valid. Errors: {0}'.format(form.errors)))
+
+        data = {'category_{0}'.format(self.rating_category.pk): '3'}
+        form = ReviewForm(reviewed_item=self.content_object, data=data)
+        self.assertTrue(form.is_valid(), msg=(
+            'The form should be valid. Errors: {0}'.format(form.errors)))
+
+        review = form.save()
+        self.assertEqual(Review.objects.count(), 1, msg=(
+            'One review should have been created.'))
+        self.assertEqual(
+            Rating.objects.all()[0].review,
+            Review.objects.all()[0],
+            msg=('The rating\'s review should be equal the form\'s instance.'))
+        self.assertEqual(
+            Rating.objects.all()[0].category.pk,
+            self.rating_category.pk,
+            msg=('The rating\'s category should be saved.'))
+        self.assertEqual(Rating.objects.all()[0].value, '3', msg=(
+            'The rating\'s value should be saved.'))
+        self.assertIsNone(review.user, msg=('User should be None.'))

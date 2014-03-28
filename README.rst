@@ -58,6 +58,22 @@ Create a button and add some markup like:
     <a href="{% url "review_create" content_type='book' object_id=book.pk %}">{% trans "Review this book" %}</a>
 
 
+For rendering the total review average for any object, you can use the
+assignment tag ``total_review_average``. It automatically calculates the
+averages of all reviews for the given object and you can specify what range it
+should have. The following examples would resemble a percentage or a stars
+rating:
+
+.. code-block:: html
+
+    {% load review_tags %}
+    {% total_review_average object 100 as percentage %}
+    <p>{{ percentage }}% of our users recommended this!</p>
+
+    {% total_review_average object 5 as stars %}
+    <p>This object got {{ stars }} out of 5 stars.</p>
+
+
 Settings
 --------
 
