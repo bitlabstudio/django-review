@@ -135,8 +135,8 @@ class Review(models.Model):
         # recently found max
         for category in categories:
             category_average = 0.0
-            ratings = Rating.objects.filter(category=category,
-                                            value__isnull=False)
+            ratings = Rating.objects.filter(
+                category=category, value__isnull=False).exclude(value='')
             category_max = category_maximums[category]
             for rating in ratings:
                 category_average += float(rating.value)
@@ -248,10 +248,21 @@ class RatingCategory(TranslatableModel):
     def __unicode__(self):
         return self.lazy_translation_getter('name', 'Untranslated')
 
+    @property
+    def required(self):
+        """Returns False, if the choices include a None value."""
+        if not hasattr(self, '_required'):
+            # get_choices sets _required
+            self.get_choices()
+        return self._required
+
     def get_choices(self):
         """Returns the tuple of choices for this category."""
         choices = ()
+        self._required = True
         for choice in self.choices.all():
+            if choice.value is None or choice.value == '':
+                self._required = False
             choices += (choice.value, choice.label),
         if not choices:
             return DEFAULT_CHOICES
@@ -259,7 +270,7 @@ class RatingCategory(TranslatableModel):
 
     def get_rating_max_from_choices(self):
         """Returns the maximun value a rating can have in this catgory."""
-        return int(list(self.get_choices())[-1][0])
+        return int(list(self.get_choices())[0][0])
 
 
 class RatingCategoryChoice(TranslatableModel):
@@ -297,6 +308,9 @@ class RatingCategoryChoice(TranslatableModel):
     def __unicode__(self):
         return self.lazy_translation_getter('label',
                                             self.ratingcategory.identifier)
+
+    class Meta:
+        ordering = ('-value', )
 
 
 class Rating(models.Model):

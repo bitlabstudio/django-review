@@ -45,8 +45,12 @@ class ReviewViewMixin(object):
         return kwargs
 
     def get_success_url(self):
-        if getattr(settings, 'REVIEW_UPDATE_SUCCESS_URL', False):
-            return reverse(settings.REVIEW_UPDATE_SUCCESS_URL)
+        success_url = getattr(settings, 'REVIEW_UPDATE_SUCCESS_URL', None)
+        if success_url is not None:
+            if callable(success_url):
+                return success_url(self.object)
+            else:
+                return reverse(success_url)
         return reverse('review_detail', kwargs={'pk': self.object.pk})
 
 

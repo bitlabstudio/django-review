@@ -58,6 +58,12 @@ Create a button and add some markup like:
     <a href="{% url "review_create" content_type='book' object_id=book.pk %}">{% trans "Review this book" %}</a>
 
 
+Template tags
+-------------
+
+total_review_average
+++++++++++++++++++++
+
 For rendering the total review average for any object, you can use the
 assignment tag ``total_review_average``. It automatically calculates the
 averages of all reviews for the given object and you can specify what range it
@@ -72,6 +78,23 @@ rating:
 
     {% total_review_average object 5 as stars %}
     <p>This object got {{ stars }} out of 5 stars.</p>
+
+
+user_has_reviewed
++++++++++++++++++
+
+To quickly check if a user has already reviewed the given object, you can use
+this template tag. An example usage could be something like this:
+
+.. code-block:: html
+
+    {% load review_tags %}
+    {% user_has_reviewed myobject request.user as has_reviewed %}
+    {% if has_reviewed %}
+        <p>Thanks for your oppinion!</p>
+    {% else %}
+        <a href="{% url "review_create" content_type='book' object_id=book.pk %}">{% trans "Review this book" %}</a>
+    {% endif %}
 
 
 Settings
@@ -122,6 +145,20 @@ Default: DetailView of the instance.
 Name of the URL to redirect to after creating/updating a review instance.
 This could be your review listing, for example.
 
+.. code-block:: python
+
+    REVIEW_UPDATE_SUCCESS_URL = 'my_view_name'
+
+
+Or you can also specify a function, that returns the full path. The function
+then takes the review as parameter, so you can also access the reviewed item
+like follows
+
+.. code-block:: python
+
+    REVIEW_UPDATE_SUCCESS_URL = lambda review: review.reviewed_item.get_absolute_url()
+
+
 
 REVIEW_AVOID_MULTIPLE_REVIEWS
 +++++++++++++++++++++++++++++
@@ -133,7 +170,7 @@ REVIEW_PERMISSION_FUNCTION
 ++++++++++++++++++++++++++
 
 Custom function to check the user's permission. Use a function and note that
-the user is the only parameter.
+the user and the reviewed item are only parameters.
 
 .. code-block:: python
 
@@ -161,6 +198,21 @@ Take a look at the included test app to get an example.
 
 You can also use a custom form to add another content object to the review
 instance.
+
+
+REVIEW_FORM_CHOICES_WIDGET
+++++++++++++++++++++++++++
+
+If you only want to override Django's default widget for the used
+``ChoiceField``, that is used in the form, you can specify this optional
+setting.
+
+.. code-block:: python
+
+    from django import forms
+
+    # this would use a RadioSelect instead of the default Select
+    REVIEW_FORM_CHOICES_WIDGET = forms.RadioSelect
 
 
 Contribute

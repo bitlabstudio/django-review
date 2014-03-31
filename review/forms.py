@@ -10,15 +10,18 @@ class ReviewForm(forms.ModelForm):
     def __init__(self, reviewed_item, user=None, *args, **kwargs):
         self.user = user
         self.reviewed_item = reviewed_item
+        self.widget = getattr(settings, 'REVIEW_FORM_CHOICE_WIDGET', None)
         super(ReviewForm, self).__init__(*args, **kwargs)
         # Dynamically add fields for each rating category
         for category in RatingCategory.objects.all():
             field_name = 'category_{0}'.format(category.pk)
+            choices = category.get_choices()
             self.fields[field_name] = forms.ChoiceField(
-                choices=getattr(settings, 'REVIEW_RATING_CHOICES',
-                                category.get_choices()),
-                label=category.__unicode__(),
+                choices=choices, label=category.__unicode__(),
             )
+            self.fields[field_name].required = category.required
+            if self.widget is not None:
+                self.fields[field_name].widget = self.widget()
             if self.instance.pk:
                 try:
                     self.initial.update({
@@ -44,6 +47,7 @@ class ReviewForm(forms.ModelForm):
                 )
                 rating.value = self.cleaned_data[field]
                 rating.save()
+
         self.instance.average_rating = self.instance.get_average_rating()
         self.instance.save()
         return self.instance

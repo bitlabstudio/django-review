@@ -20,3 +20,15 @@ def total_review_average(obj, normalize_to=100):
     if reviews:
         total_average /= reviews.count()
     return total_average
+
+
+@register.assignment_tag
+def user_has_reviewed(obj, user):
+    """Returns True if the user has already reviewed the object."""
+    ctype = ContentType.objects.get_for_model(obj.__class__)
+    try:
+        models.Review.objects.get(user=user, content_type=ctype,
+                                  object_id=obj.id)
+    except models.Review.DoesNotExist:
+        return False
+    return True

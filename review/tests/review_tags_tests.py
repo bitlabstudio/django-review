@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from django_libs.tests.factories import UserFactory
 
-from ..templatetags.review_tags import total_review_average
+from ..templatetags.review_tags import total_review_average, user_has_reviewed
 from . import factories
 
 
@@ -44,3 +44,21 @@ class TotalReviewAverageTestCase(TestCase):
         self.assertEqual(total_review_average(self.content_object), 50)
         self.assertEqual(total_review_average(self.content_object, 10), 5)
         self.assertEqual(total_review_average(self.content_object, 5), 2.5)
+
+
+class UserHasReviewedTestCase(TestCase):
+    """Tests for the ``user_has_reviewed`` template tag."""
+    longMessage = True
+
+    def setUp(self):
+        self.user = UserFactory()
+        self.content_object = UserFactory()
+        self.review = factories.ReviewFactory(
+            user=self.user,
+            reviewed_item=self.content_object)
+        self.other_user = UserFactory()
+
+    def test_tag(self):
+        self.assertTrue(user_has_reviewed(self.content_object, self.user))
+        self.assertFalse(user_has_reviewed(self.content_object,
+                                           self.other_user))

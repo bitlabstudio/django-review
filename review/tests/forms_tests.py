@@ -61,7 +61,8 @@ class ReviewFormTestCase(TestCase):
         # Create custom choices
         choices = []
         expected_choices = []
-        for i in range(1, 4):
+        for j in range(1, 4):
+            i = 5 - j
             choices.append(RatingCategoryChoiceFactory(
                 ratingcategory=self.rating_category,
                 value=i, label=str(i)))
