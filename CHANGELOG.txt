@@ -1,6 +1,8 @@
 === (ongoing) ===
 
 
+=== 1.6 ===
+
 - added user_has_reviewed template tag
 - allow callables for REVIEW_UPDATE_SUCCESS_URL
 - made ordering of custom choices make more sense
