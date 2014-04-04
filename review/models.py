@@ -133,6 +133,7 @@ class Review(models.Model):
         for category in categories:
             category_average = None
             ratings = Rating.objects.filter(
+                review=self,
                 category=category, value__isnull=False).exclude(value='')
             category_max = category_maximums[category]
             for rating in ratings:

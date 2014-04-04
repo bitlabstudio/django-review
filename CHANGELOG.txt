@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+- fixed query for ratings, that did not filter for review
+- fixed bug in render_category_averages template tag
 
 === 1.7 ===
 
