@@ -80,6 +80,45 @@ rating:
     <p>This object got {{ stars }} out of 5 stars.</p>
 
 
+render_category_averages
+++++++++++++++++++++++++
+
+Renders the template ``review/partials/category_averages.html`` to display a
+table of categories with their average rating.
+Again, you can specify what maximum rating value the averages normalize to.
+
+.. code-block:: html
+
+    {% load review_tags %}
+    {% render_category_averages object 100 %}
+
+
+If you had 2 categories, this would per default render to something like the
+following example, but you can of course customize the template to your needs.
+
+.. code-block:: html
+
+    <table>
+        <tr><th>Category 1:</th><td>10.0</td></tr>
+        <tr><th>Category 2:</th><td>20.0</td></tr>
+        <tr><th>Amount of reviews:</th><td>2</td></tr>
+    </table>
+
+
+get_review_count
+++++++++++++++++
+
+An assignment tag, that simply returns the amount of reviews made for the
+given object. An example usage would look like this:
+
+.. code-block:: html
+
+    {% load review_tags %}
+
+    {% get_review_count object as review_count %}
+    <p>{{ review_count }} users have reviewed this so far.</p>
+
+
 user_has_reviewed
 +++++++++++++++++
 

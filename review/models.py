@@ -9,11 +9,11 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from hvad.models import TranslatableModel, TranslatedFields
 
 DEFAULT_CHOICES = (
-    ('1', '1'),
-    ('2', '2'),
-    ('3', '3'),
-    ('4', '4'),
     ('5', '5'),
+    ('4', '4'),
+    ('3', '3'),
+    ('2', '2'),
+    ('1', '1'),
 )
 
 
@@ -97,13 +97,10 @@ class Review(models.Model):
             return self.user.email
         return ugettext('Anonymous')
 
-    def get_average_rating(self, max_value=None):
+    def get_averages(self, max_value=None):
         """
-        Returns the average rating for all categories of this review.
-
-        This is useful if you have several ratings for different categories
-        like ``Service``, ``Product Quality`` and want to show a total rating
-        for this review.
+        Centralized average calculation. Returns category averages and total
+        average.
 
         :param max_value: By default the app is set to a rating from 1 to 5.
           So if nothing is changed, we can just calculate the average of all
@@ -119,7 +116,7 @@ class Review(models.Model):
         """
         max_rating_value = 0
         category_maximums = {}
-        category_averages = []
+        category_averages = {}
         categories = RatingCategory.objects.filter(counts_for_average=True,
                                                    rating__review=self)
         # find the highest rating possible across all categories
@@ -147,17 +144,40 @@ class Review(models.Model):
             if category_average is not None:
                 category_average *= float(max_rating_value) / float(
                     category_max)
-                category_averages.append(category_average / ratings.count())
+                category_averages[category] = (
+                    category_average / ratings.count())
 
         # calculate the total average of all categories
         total_average = 0
-        for category_average in category_averages:
+        for category, category_average in category_averages.iteritems():
             total_average += category_average
         if not len(category_averages):
-            return False
+            return (False, False)
         total_average /= len(category_averages)
 
+        return total_average, category_averages
+
+    def get_average_rating(self, max_value=None):
+        """
+        Returns the average rating for all categories of this review.
+
+        A shortcut for get_averages. Look there for more details.
+
+        """
+        total_average, category_averages = self.get_averages(
+            max_value=max_value)
         return total_average
+
+    def get_category_averages(self, max_value=None):
+        """
+        Returns the average ratings for every category of this review.
+
+        A shortcut for get_averages. Look there for more details.
+
+        """
+        total_average, category_averages = self.get_averages(
+            max_value=max_value)
+        return category_averages
 
     def is_editable(self):
         """

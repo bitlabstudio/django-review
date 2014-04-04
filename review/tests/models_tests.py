@@ -61,6 +61,22 @@ class ReviewTestCase(TestCase):
         self.assertEqual(self.review.get_average_rating(100), 100, msg=(
             'Should return the average rating value.'))
 
+        # testing the category averages
+        self.assertEqual(
+            self.review.get_category_averages(6),
+            {rating1.category: 6.0, rating2.category: 6.0},
+            msg=('Should return the average ratings for the category.'))
+
+        self.assertEqual(
+            self.review.get_category_averages(),
+            {rating1.category: 6.0, rating2.category: 6.0},
+            msg=('Should return the average ratings for the category.'))
+
+        self.assertEqual(
+            self.review.get_category_averages(100),
+            {rating1.category: 100.0, rating2.category: 100.0},
+            msg=('Should return the average ratings for the category.'))
+
         # these ratings should not change results and should just be ignored
         factories.RatingFactory(
             category=rating2.category, review=self.review, value='')
@@ -77,13 +93,13 @@ class ReviewTestCase(TestCase):
         rating1.save()
         rating2.value = '1'
         rating2.save()
-        self.assertEqual(self.review.get_average_rating(6), 1.1666666666666667,
+        self.assertEqual(self.review.get_average_rating(6), 1.25,
                          msg=('Should return the average rating value.'))
-        self.assertEqual(self.review.get_average_rating(4), 0.7777777777777777,
+        self.assertEqual(self.review.get_average_rating(4), 0.8333333333333333,
                          msg=('Should return the average rating value.'))
         self.assertEqual(
             self.review.get_average_rating(100),
-            19.444444444444446, msg=(
+            20.833333333333336, msg=(
                 'Should return the average rating value.'))
 
         # and finally the lowest possible voting

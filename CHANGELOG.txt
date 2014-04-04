@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+- added get_review_count template tag
+- added render_category_averages template tag
 - fixed average calculation for 0 values
 
 === 1.6 ===

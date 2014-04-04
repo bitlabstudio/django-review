@@ -3,8 +3,52 @@ from django.test import TestCase
 
 from django_libs.tests.factories import UserFactory
 
-from ..templatetags.review_tags import total_review_average, user_has_reviewed
+from ..templatetags import review_tags
 from . import factories
+
+
+class GetReviewCountTestCase(TestCase):
+    """Tests for the ``get_review_count`` template tag."""
+    longMessage = True
+
+    def setUp(self):
+        self.reviewed_item = UserFactory()
+        self.review = factories.ReviewFactory(reviewed_item=self.reviewed_item)
+
+    def test_tag(self):
+        self.assertEqual(
+            review_tags.get_review_count(self.reviewed_item), 1)
+        self.review.delete()
+        self.assertEqual(
+            review_tags.get_review_count(self.reviewed_item), 0)
+
+
+class RenderCategoryAveragesTestCase(TestCase):
+    """Tests for the ``render_category_averages`` template tag."""
+    longMessage = True
+
+    def setUp(self):
+        self.reviewed_item = UserFactory()
+        self.rating = factories.RatingFactory(
+            review__reviewed_item=self.reviewed_item,
+            value='2')
+
+    def test_tag(self):
+        expected_value = {
+            'reviewed_item': self.reviewed_item,
+            'category_averages': {self.rating.category: 2.0},
+        }
+        self.assertEqual(
+            review_tags.render_category_averages(self.reviewed_item, 5),
+            expected_value)
+
+        expected_value = {
+            'reviewed_item': self.reviewed_item,
+            'category_averages': {self.rating.category: 40.0},
+        }
+        self.assertEqual(
+            review_tags.render_category_averages(self.reviewed_item, 100),
+            expected_value)
 
 
 class TotalReviewAverageTestCase(TestCase):
@@ -27,23 +71,28 @@ class TotalReviewAverageTestCase(TestCase):
                 ratingcategory=self.rating2.category, value=i)
 
     def test_tag(self):
-        self.assertEqual(total_review_average(self.content_object), 100)
+        self.assertEqual(
+            review_tags.total_review_average(self.content_object), 100)
         factories.RatingFactory(
             category=self.rating1.category,
             review=self.review, value='0')
         factories.RatingFactory(
             category=self.rating2.category,
             review=self.review, value='0')
-        self.assertEqual(total_review_average(self.content_object), 50)
+        self.assertEqual(
+            review_tags.total_review_average(self.content_object), 50)
         factories.RatingFactory(
             category=self.rating1.category,
             review=self.review, value='')
         factories.RatingFactory(
             category=self.rating2.category,
             review=self.review, value='')
-        self.assertEqual(total_review_average(self.content_object), 50)
-        self.assertEqual(total_review_average(self.content_object, 10), 5)
-        self.assertEqual(total_review_average(self.content_object, 5), 2.5)
+        self.assertEqual(
+            review_tags.total_review_average(self.content_object), 50)
+        self.assertEqual(
+            review_tags.total_review_average(self.content_object, 10), 5)
+        self.assertEqual(
+            review_tags.total_review_average(self.content_object, 5), 2.5)
 
 
 class UserHasReviewedTestCase(TestCase):
@@ -59,6 +108,8 @@ class UserHasReviewedTestCase(TestCase):
         self.other_user = UserFactory()
 
     def test_tag(self):
-        self.assertTrue(user_has_reviewed(self.content_object, self.user))
-        self.assertFalse(user_has_reviewed(self.content_object,
-                                           self.other_user))
+        self.assertTrue(
+            review_tags.user_has_reviewed(self.content_object, self.user))
+        self.assertFalse(
+            review_tags.user_has_reviewed(self.content_object,
+                                          self.other_user))
