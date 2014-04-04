@@ -17,7 +17,8 @@ class ReviewForm(forms.ModelForm):
             field_name = 'category_{0}'.format(category.pk)
             choices = category.get_choices()
             self.fields[field_name] = forms.ChoiceField(
-                choices=choices, label=category.__unicode__(),
+                choices=choices, label=category.name,
+                help_text=category.question,
             )
             self.fields[field_name].required = category.required
             if self.widget is not None:

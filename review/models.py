@@ -249,7 +249,9 @@ class RatingCategory(TranslatableModel):
     categories, like ``Food``, ``Room service``, ``Cleansines`` and so on.
 
     :identifier: Optional identifier.
-    :name: Name of the category.
+    :name: Name of the category. Also used as label for the category form.
+    :question: If you want to render a more explicit question in addition to
+      the name, use this field. It is added to the form fields as help text.
     :counts_for_average: If True, the ratings of this category will be used to
       calculate the average rating. Default is True.
 
@@ -267,6 +269,7 @@ class RatingCategory(TranslatableModel):
 
     translations = TranslatedFields(
         name=models.CharField(max_length=256),
+        question=models.CharField(max_length=512, blank=True, null=True),
     )
 
     def __unicode__(self):

@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+- added question field to RatingCategory to allow showing more explainatory
+  information. The name field remains as label for the form's category fields
+  as short version of the question.
 - added get_review_count template tag
 - added render_category_averages template tag
 - fixed average calculation for 0 values

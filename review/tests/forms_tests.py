@@ -15,6 +15,8 @@ class ReviewFormTestCase(TestCase):
         self.user = UserFactory()
         self.content_object = UserFactory()
         self.rating_category = RatingCategoryFactory()
+        trans = self.rating_category.translate('en-us')
+        trans.save()
 
     def test_form(self):
         form = ReviewForm(reviewed_item=self.content_object)
@@ -49,6 +51,8 @@ class ReviewFormTestCase(TestCase):
         self.assertIsNotNone(review.user, msg=('User should be existant.'))
 
         self.new_category = RatingCategoryFactory()
+        trans = self.new_category.translate('en-us')
+        trans.save()
         form = ReviewForm(instance=review, reviewed_item=self.content_object)
         self.assertEqual(
             form.initial.get('category_{0}'.format(self.rating_category.pk)),
