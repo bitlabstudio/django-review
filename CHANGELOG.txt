@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+
+=== 1.7 ===
+
 - added question field to RatingCategory to allow showing more explainatory
   information. The name field remains as label for the form's category fields
   as short version of the question.
