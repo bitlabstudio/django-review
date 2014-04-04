@@ -91,7 +91,7 @@ this template tag. An example usage could be something like this:
     {% load review_tags %}
     {% user_has_reviewed myobject request.user as has_reviewed %}
     {% if has_reviewed %}
-        <p>Thanks for your oppinion!</p>
+        <p>Thanks for your opinion!</p>
     {% else %}
         <a href="{% url "review_create" content_type='book' object_id=book.pk %}">{% trans "Review this book" %}</a>
     {% endif %}
