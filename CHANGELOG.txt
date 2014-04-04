@@ -1,6 +1,8 @@
 === (ongoing) ===
 
 
+- fixed iteration over dictionary
+
 === 1.7.1 ===
 
 - fixed query for ratings, that did not filter for review
