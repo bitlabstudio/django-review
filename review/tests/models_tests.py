@@ -33,7 +33,7 @@ class ReviewTestCase(TestCase):
         self.assertEqual(self.review.get_average_rating(), 3, msg=(
             'Should return the average rating value.'))
 
-        factories.RatingFactory(review=self.review, value=None)
+        factories.RatingFactory(review=self.review, value='')
         factories.RatingFactory(category__counts_for_average=False,
                                 review=self.review, value=0.0)
         self.assertEqual(self.review.get_average_rating(), 3, msg=(
@@ -63,8 +63,8 @@ class ReviewTestCase(TestCase):
 
         # these ratings should not change results and should just be ignored
         factories.RatingFactory(
-            category=rating2.category, review=self.review, value=None)
-        factories.RatingFactory(review=self.review, value=None)
+            category=rating2.category, review=self.review, value='')
+        factories.RatingFactory(review=self.review, value='')
         self.assertEqual(self.review.get_average_rating(6), 6, msg=(
             'Should return the average rating value.'))
         self.assertEqual(self.review.get_average_rating(4), 4, msg=(

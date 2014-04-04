@@ -134,15 +134,19 @@ class Review(models.Model):
         # calculate the average of every distinct category, normalized to the
         # recently found max
         for category in categories:
-            category_average = 0.0
+            category_average = None
             ratings = Rating.objects.filter(
                 category=category, value__isnull=False).exclude(value='')
             category_max = category_maximums[category]
             for rating in ratings:
-                category_average += float(rating.value)
+                if category_average is None:
+                    category_average = float(rating.value)
+                else:
+                    category_average += float(rating.value)
 
-            category_average *= float(max_rating_value) / float(category_max)
-            if category_average:
+            if category_average is not None:
+                category_average *= float(max_rating_value) / float(
+                    category_max)
                 category_averages.append(category_average / ratings.count())
 
         # calculate the total average of all categories

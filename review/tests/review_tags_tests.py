@@ -37,10 +37,10 @@ class TotalReviewAverageTestCase(TestCase):
         self.assertEqual(total_review_average(self.content_object), 50)
         factories.RatingFactory(
             category=self.rating1.category,
-            review=self.review, value=None)
+            review=self.review, value='')
         factories.RatingFactory(
             category=self.rating2.category,
-            review=self.review, value=None)
+            review=self.review, value='')
         self.assertEqual(total_review_average(self.content_object), 50)
         self.assertEqual(total_review_average(self.content_object, 10), 5)
         self.assertEqual(total_review_average(self.content_object, 5), 2.5)

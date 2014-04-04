@@ -107,3 +107,60 @@ class ReviewFormTestCase(TestCase):
         self.assertEqual(Rating.objects.all()[0].value, '3', msg=(
             'The rating\'s value should be saved.'))
         self.assertIsNone(review.user, msg=('User should be None.'))
+
+        RatingCategoryChoiceFactory(
+            ratingcategory=self.rating_category,
+            value=0, label='0',
+        )
+        data = {'content': 'foo',
+                'category_{0}'.format(self.rating_category.pk): None}
+        form = ReviewForm(reviewed_item=self.content_object, data=data)
+        self.assertFalse(form.is_valid(), msg=(
+            'You should not be able to rate a category with None if there'
+            ' is no None choice.'))
+
+        data = {'content': 'foobar'}
+        form = ReviewForm(reviewed_item=self.content_object, data=data)
+        self.assertFalse(form.is_valid(), msg=(
+            'Without any choice selected, the form should be invalid.'))
+
+
+class ReviewFormRegressionTestCase(TestCase):
+    """
+    This TestCase for the ``ReviewForm`` seeks to recreate situations of
+    recent bugs.
+
+    """
+    longMessage = True
+
+    def setUp(self):
+        self.user = UserFactory()
+
+        self.categories = RatingCategoryFactory.create_bulk(5)
+        for i, category in enumerate(self.categories):
+            # the first is just yes/no question
+            if i == 0:
+                category.counts_for_average = False
+                category.save()
+                for j in range(0, 2):
+                    RatingCategoryChoiceFactory(
+                        value=i, label=str(i), ratingcategory=category)
+            # all the other categories have choices from 0 to 4
+            else:
+                for j in range(0, 5):
+                    RatingCategoryChoiceFactory(
+                        value=i, label=str(i), ratingcategory=category)
+                # the fourth category should be nullable and gets this extra
+                # choice
+                if i == 3:
+                    RatingCategoryFactory(value=None, label='None',
+                                          ratingcategory=category)
+
+        bad_data = {
+            'category_1': 0,  # answered 'no'
+            'category_2': 5,
+            'category_3': 5,
+            'category_4': None,
+            'category_5': 0,
+            'content': '',
+        }
