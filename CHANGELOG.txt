@@ -1,6 +1,8 @@
 === (ongoing) ===
 
 
+- counting only valid ratings for category average
+
 === 1.7.3 ===
 
 - fixed empty categories raising an exception for not being in the averages

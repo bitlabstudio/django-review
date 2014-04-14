@@ -36,7 +36,10 @@ def render_category_averages(obj, normalize_to=100):
     if reviews and category_averages:
         for category, average in category_averages.iteritems():
             category_averages[category] = \
-                category_averages[category] / reviews.count()
+                category_averages[category] / models.Rating.objects.filter(
+                    category=category, value__isnull=False,
+                    review__content_type=ctype, review__object_id=obj.id
+                ).exclude(value='').count()
     else:
         category_averages = {}
         for category in models.RatingCategory.objects.filter(
