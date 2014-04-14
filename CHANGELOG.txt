@@ -1,6 +1,8 @@
 === (ongoing) ===
 
 
+=== 1.7.4 ===
+
 - counting only valid ratings for category average
 
 === 1.7.3 ===
