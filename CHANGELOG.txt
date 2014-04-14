@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+
+=== 1.7.3 ===
+
 - fixed empty categories raising an exception for not being in the averages
   dictionary in the render_category_averages template tag.
 
