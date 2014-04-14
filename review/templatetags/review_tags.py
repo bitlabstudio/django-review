@@ -26,10 +26,11 @@ def render_category_averages(obj, normalize_to=100):
     category_averages = {}
     for review in reviews:
         review_category_averages = review.get_category_averages(normalize_to)
-        if not category_averages:
-            category_averages = review_category_averages
-        else:
-            for category, average in review_category_averages.iteritems():
+        for category, average in review_category_averages.iteritems():
+            if category not in category_averages:
+                category_averages[category] = review_category_averages[
+                    category]
+            else:
                 category_averages[category] += review_category_averages[
                     category]
     if reviews and category_averages:
