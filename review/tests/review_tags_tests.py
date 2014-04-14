@@ -29,11 +29,11 @@ class RenderCategoryAveragesTestCase(TestCase):
 
     def setUp(self):
         self.reviewed_item = UserFactory()
+
+    def test_tag(self):
         self.rating = factories.RatingFactory(
             review__reviewed_item=self.reviewed_item,
             value='2')
-
-    def test_tag(self):
         expected_value = {
             'reviewed_item': self.reviewed_item,
             'category_averages': {self.rating.category: 2.0},
@@ -49,6 +49,38 @@ class RenderCategoryAveragesTestCase(TestCase):
         self.assertEqual(
             review_tags.render_category_averages(self.reviewed_item, 100),
             expected_value)
+
+    def test_tag_more_extensively(self):
+        self.review = factories.ReviewFactory(reviewed_item=self.reviewed_item)
+        # the test_tag case was merely to cover some basic functionality. This
+        # goes more in depth.
+        rating1 = factories.RatingFactory(review=self.review, value='4')
+        # we create choices to simulate, that the previous value was the max
+        for i in range(0, 5):
+            factories.RatingCategoryChoiceFactory(
+                ratingcategory=rating1.category, value=i)
+        rating2 = factories.RatingFactory(review=self.review, value='4')
+        # we create choices to simulate, that the previous value was the max
+        for i in range(0, 7):
+            factories.RatingCategoryChoiceFactory(
+                ratingcategory=rating2.category, value=i)
+        factories.RatingFactory(
+            category=rating2.category, review=self.review, value=None)
+        factories.RatingFactory(
+            category=rating2.category, review=self.review, value=None)
+
+        expected_value = {
+            'reviewed_item': self.reviewed_item,
+            'category_averages': {
+                rating1.category: 6.0,
+                rating2.category: 4.0,
+            },
+        }
+
+        self.assertEqual(
+            review_tags.render_category_averages(self.reviewed_item, 6),
+            expected_value,
+        )
 
 
 class TotalReviewAverageTestCase(TestCase):

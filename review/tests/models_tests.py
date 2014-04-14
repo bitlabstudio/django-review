@@ -53,6 +53,10 @@ class ReviewTestCase(TestCase):
         for i in range(0, 7):
             factories.RatingCategoryChoiceFactory(
                 ratingcategory=rating2.category, value=i)
+        rating3 = factories.RatingFactory(
+            category=rating2.category, review=self.review, value='6')
+        factories.RatingFactory(
+            category=rating2.category, review=self.review, value=None)
         # testing the absolute max voting
         self.assertEqual(self.review.get_average_rating(6), 6, msg=(
             'Should return the average rating value.'))
@@ -93,6 +97,8 @@ class ReviewTestCase(TestCase):
         rating1.save()
         rating2.value = '1'
         rating2.save()
+        rating3.value = '1'
+        rating3.save()
         self.assertEqual(self.review.get_average_rating(6), 1.25,
                          msg=('Should return the average rating value.'))
         self.assertEqual(self.review.get_average_rating(4), 0.8333333333333333,
@@ -107,6 +113,8 @@ class ReviewTestCase(TestCase):
         rating1.save()
         rating2.value = '0'
         rating2.save()
+        rating3.value = '0'
+        rating3.save()
         self.assertEqual(self.review.get_average_rating(6), 0,
                          msg=('Should return the average rating value.'))
         self.assertEqual(self.review.get_average_rating(4), 0,
