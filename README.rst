@@ -124,7 +124,7 @@ An example usage would look like this:
             {% if review.content %}
                 {{ review.content|truncatewords:'70' }}
             {% else %}
-                {% trans "Reviewed without description." %}
+                Reviewed without description.
             {% endif %}
         </div>
         <a href="{% url "review_detail" pk=object.pk %}">Review details</a>
