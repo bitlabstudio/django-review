@@ -105,6 +105,32 @@ following example, but you can of course customize the template to your needs.
     </table>
 
 
+get_reviews
++++++++++++
+
+An assignment tag, that simply returns the reviews made for the given object.
+An example usage would look like this:
+
+.. code-block:: html
+
+    {% load review_tags %}
+
+    {% get_reviews object as reviews %}
+    {% for review in reviews %}
+        <p>
+            {{ review.get_average_rating }}
+        </p>
+        <p>
+            {% if review.content %}
+                {{ review.content|truncatewords:'70' }}
+            {% else %}
+                {% trans "Reviewed without description." %}
+            {% endif %}
+        </div>
+        <a href="{% url "review_detail" pk=object.pk %}">Review details</a>
+    {% endfor %}
+
+
 get_review_count
 ++++++++++++++++
 

@@ -53,7 +53,6 @@ EXTERNAL_APPS = [
     'django_nose',
     'hvad',
     'user_media',
-    'generic_positions',
 ]
 
 INTERNAL_APPS = [

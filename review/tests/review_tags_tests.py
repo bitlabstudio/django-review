@@ -7,6 +7,20 @@ from ..templatetags import review_tags
 from . import factories
 
 
+class GetReviewsTestCase(TestCase):
+    """Tests for the ``get_reviews`` template tag."""
+    longMessage = True
+
+    def setUp(self):
+        self.reviewed_item = UserFactory()
+        self.review = factories.ReviewFactory(reviewed_item=self.reviewed_item)
+
+    def test_tag(self):
+        self.assertEqual(len(review_tags.get_reviews(self.reviewed_item)), 1)
+        self.review.delete()
+        self.assertEqual(len(review_tags.get_reviews(self.reviewed_item)), 0)
+
+
 class GetReviewCountTestCase(TestCase):
     """Tests for the ``get_review_count`` template tag."""
     longMessage = True

@@ -9,11 +9,16 @@ register = Library()
 
 
 @register.assignment_tag
+def get_reviews(obj):
+    """Simply returns the reviews for an object."""
+    ctype = ContentType.objects.get_for_model(obj)
+    return models.Review.objects.filter(content_type=ctype, object_id=obj.id)
+
+
+@register.assignment_tag
 def get_review_count(obj):
     """Simply returns the review count for an object."""
-    ctype = ContentType.objects.get_for_model(obj)
-    return models.Review.objects.filter(
-        content_type=ctype, object_id=obj.id).count()
+    return get_reviews(obj).count()
 
 
 @register.inclusion_tag('review/partials/category_averages.html')
