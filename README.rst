@@ -131,6 +131,20 @@ An example usage would look like this:
     {% endfor %}
 
 
+get_review_average
+++++++++++++++++++
+
+An assignment tag, that returns the review average for the given object. An
+example usage would look like this:
+
+.. code-block:: html
+
+    {% load review_tags %}
+
+    {% get_review_average object as review_average %}
+    <p>This object is rated by {{ review_average }}</p>
+
+
 get_review_count
 ++++++++++++++++
 

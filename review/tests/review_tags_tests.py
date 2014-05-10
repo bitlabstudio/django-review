@@ -21,6 +21,22 @@ class GetReviewsTestCase(TestCase):
         self.assertEqual(len(review_tags.get_reviews(self.reviewed_item)), 0)
 
 
+class GetReviewAverageTestCase(TestCase):
+    """Tests for the ``get_review_average`` template tag."""
+    longMessage = True
+
+    def setUp(self):
+        self.reviewed_item = UserFactory()
+
+    def test_tag(self):
+        self.assertFalse(review_tags.get_review_average(self.reviewed_item))
+        review = factories.ReviewFactory(reviewed_item=self.reviewed_item)
+        self.assertEqual(review_tags.get_review_average(self.reviewed_item), 0)
+        rating = factories.RatingFactory(review=review)
+        factories.RatingFactory(review=review, category=rating.category)
+        self.assertEqual(review_tags.get_review_average(self.reviewed_item), 3)
+
+
 class GetReviewCountTestCase(TestCase):
     """Tests for the ``get_review_count`` template tag."""
     longMessage = True

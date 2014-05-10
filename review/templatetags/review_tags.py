@@ -16,6 +16,22 @@ def get_reviews(obj):
 
 
 @register.assignment_tag
+def get_review_average(obj):
+    """Returns the review average for an object."""
+    total = 0
+    reviews = get_reviews(obj)
+    if not reviews:
+        return False
+    for review in reviews:
+        average = review.get_average_rating()
+        if average:
+            total += review.get_average_rating()
+    if total > 0:
+        return total / reviews.count()
+    return False
+
+
+@register.assignment_tag
 def get_review_count(obj):
     """Simply returns the review count for an object."""
     return get_reviews(obj).count()

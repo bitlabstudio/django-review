@@ -1,6 +1,7 @@
 === (ongoing) ===
 
 - added get_reviews template tag
+- added get_review_average template tag
 
 === 1.7.4 ===
 
