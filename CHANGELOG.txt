@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+=== 1.8.1 ===
+
 - Added more dependencies to setup.py
 
 === 1.8 ===
