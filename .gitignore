@@ -1,8 +1,9 @@
 *.egg-info/
 *.pyc
 *coverage/
+app_media/
+app_static/
+build/
 db.sqlite
 dist/
 docs/_build/
-app_media/
-app_static/

@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+- Added more dependencies to setup.py
+
 === 1.8 ===
 
 - added get_reviews template tag
