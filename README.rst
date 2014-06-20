@@ -27,6 +27,8 @@ Add ``review`` to your ``INSTALLED_APPS``
     INSTALLED_APPS = (
         ...,
         'review',
+        'user_media',
+        'generic_positions',
     )
 
 Add the ``review`` URLs to your ``urls.py``
