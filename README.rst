@@ -245,6 +245,7 @@ REVIEW_AVOID_MULTIPLE_REVIEWS
 +++++++++++++++++++++++++++++
 
 Avoids multiple reviews by one user, if set to ``True``.
+Doesn't work with anonymous users.
 
 
 REVIEW_PERMISSION_FUNCTION
