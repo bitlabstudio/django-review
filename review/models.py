@@ -42,7 +42,7 @@ class Review(models.Model):
     reviewed_item = generic.GenericForeignKey('content_type', 'object_id')
 
     user = models.ForeignKey(
-        'auth.User',
+        getattr(settings, 'AUTH_USER_MODEL', 'auth.User'),
         verbose_name=_('User'),
         blank=True, null=True,
     )
