@@ -1,5 +1,8 @@
 === (ongoing) ===
 
+- Added custom user model
+- Requirement update
+
 === 1.8.1 ===
 
 - Added more dependencies to setup.py

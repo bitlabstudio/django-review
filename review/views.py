@@ -14,7 +14,7 @@ from .forms import ReviewForm
 from .models import Review
 
 
-#------ MIXINS ------#
+# ------ MIXINS ------ #
 
 class ReviewViewMixin(object):
     model = Review
@@ -73,7 +73,7 @@ class ReviewUpdateMixin(object):
             request, *args, **kwargs)
 
 
-#------ MODEL VIEWS ------#
+# ------ MODEL VIEWS ------ #
 
 class ReviewCreateView(ReviewViewMixin, CreateView):
     """View to create a new ``Review`` instance."""
