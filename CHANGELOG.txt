@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.9.1 ===
+
+- Prepared south migrations for custom user models
+
 === 1.9 ===
 
 - Added custom user model
