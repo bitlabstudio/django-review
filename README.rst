@@ -282,8 +282,8 @@ You can also use a custom form to add another content object to the review
 instance.
 
 
-REVIEW_FORM_CHOICES_WIDGET
-++++++++++++++++++++++++++
+REVIEW_FORM_CHOICE_WIDGET
++++++++++++++++++++++++++
 
 If you only want to override Django's default widget for the used
 ``ChoiceField``, that is used in the form, you can specify this optional
@@ -291,10 +291,8 @@ setting.
 
 .. code-block:: python
 
-    from django import forms
-
     # this would use a RadioSelect instead of the default Select
-    REVIEW_FORM_CHOICES_WIDGET = forms.RadioSelect
+    REVIEW_FORM_CHOICE_WIDGET = 'django.forms.widgets.RadioSelect'
 
 
 Contribute

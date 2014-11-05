@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+- Fixed REVIEW_FORM_CHOICE_WIDGET setting
+
 === 1.9.1 ===
 
 - Prepared south migrations for custom user models

@@ -62,7 +62,7 @@ INTERNAL_APPS = [
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
-COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
+COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS + ['compat$']
 
 SECRET_KEY = 'foobar'
 
@@ -74,3 +74,5 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
+REVIEW_FORM_CHOICE_WIDGET = 'django.forms.widgets.RadioSelect'

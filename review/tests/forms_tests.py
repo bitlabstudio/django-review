@@ -22,6 +22,11 @@ class ReviewFormTestCase(TestCase):
         form = ReviewForm(reviewed_item=self.content_object)
         self.assertTrue(form, msg=('Form has been initiated.'))
 
+        with self.settings(
+                REVIEW_FORM_CHOICE_WIDGET='django.forms.RadioSelect'):
+            form = ReviewForm(reviewed_item=self.content_object)
+            self.assertTrue(form, msg=('Form has been initiated.'))
+
         data = {'category_{0}'.format(self.rating_category.pk): '3'}
         form = ReviewForm(reviewed_item=self.content_object, data=data)
         self.assertTrue(form.is_valid(), msg=('Form should be valid.'))
