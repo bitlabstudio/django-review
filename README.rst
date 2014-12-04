@@ -45,6 +45,7 @@ Don't forget to migrate your database
 .. code-block:: bash
 
     ./manage.py migrate review
+    ./manage.py migrate user_media
 
 
 Usage
