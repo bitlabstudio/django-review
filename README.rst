@@ -26,6 +26,7 @@ Add ``review`` to your ``INSTALLED_APPS``
 
     INSTALLED_APPS = (
         ...,
+        'hvad',
         'review',
         'user_media',
         'generic_positions',
