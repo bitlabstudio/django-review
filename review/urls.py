@@ -1,11 +1,10 @@
 """URLs for the review app."""
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from . import views
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^(?P<pk>\d+)/delete/$',
         views.ReviewDeleteView.as_view(),
         name='review_delete'),
@@ -18,4 +17,4 @@ urlpatterns = patterns(
     url(r'^(?P<content_type>[-\w]+)/(?P<object_id>\d+)/create/$',
         views.ReviewCreateView.as_view(),
         name='review_create'),
-)
+]

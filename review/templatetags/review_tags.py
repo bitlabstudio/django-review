@@ -59,8 +59,8 @@ def render_category_averages(obj, normalize_to=100):
             category_averages[category] = \
                 category_averages[category] / models.Rating.objects.filter(
                     category=category, value__isnull=False,
-                    review__content_type=ctype, review__object_id=obj.id
-                ).exclude(value='').count()
+                    review__content_type=ctype,
+                    review__object_id=obj.id).exclude(value='').count()
     else:
         category_averages = {}
         for category in models.RatingCategory.objects.filter(

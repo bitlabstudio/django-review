@@ -1,6 +1,7 @@
 *.egg-info/
 *.pyc
 *coverage/
+.coverage
 app_media/
 app_static/
 build/

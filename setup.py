@@ -53,10 +53,9 @@ setup(
     include_package_data=True,
     install_requires=[
         'django',
-        'django-user-media>=1.0',
-        'django-generic-positions',
-        'django-hvad>=0.4.1, <=1.0.0',
-        docutils >= 0.3, <=0.5
+        'django-user-media>=1.2.1',
+        'django-generic-positions>=0.2',
+        'django-hvad',
         'easy-thumbnails',
         'simplejson',
     ],

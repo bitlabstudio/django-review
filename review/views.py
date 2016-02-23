@@ -107,8 +107,8 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
                         reverse('review_update', kwargs={'pk': old_review.pk}))
             # Check the custom permission function
             has_perm = getattr(settings, 'REVIEW_PERMISSION_FUNCTION', None)
-            if (callable(has_perm)
-                    and not has_perm(request.user, self.reviewed_item)):
+            if (callable(has_perm) and not has_perm(
+                    request.user, self.reviewed_item)):
                 raise Http404
         return super(ReviewCreateView, self).dispatch(request, *args, **kwargs)
 

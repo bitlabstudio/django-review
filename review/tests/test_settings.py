@@ -1,9 +1,6 @@
 """Settings that need to be set in order to run the tests."""
 import os
-import logging
 
-
-logging.getLogger("factory").setLevel(logging.WARN)
 
 DEBUG = True
 
@@ -29,16 +26,20 @@ STATICFILES_DIRS = (
     os.path.join(APP_ROOT, 'static'),
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(APP_ROOT, 'tests/test_app/templates'),
-)
-
-COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(
-    os.path.join(APP_ROOT, 'tests/coverage'))
-COVERAGE_MODULE_EXCLUDES = [
-    'tests$', 'settings$', 'urls$', 'locale$',
-    'migrations', 'fixtures', 'admin$', 'django_extensions',
-]
+TEMPLATES = [{
+    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+    'APP_DIRS': True,
+    'DIRS': [os.path.join(APP_ROOT, 'tests/test_app/templates')],
+    'OPTIONS': {
+        'context_processors': (
+            'django.contrib.auth.context_processors.auth',
+            'django.core.context_processors.i18n',
+            'django.core.context_processors.request',
+            'django.core.context_processors.media',
+            'django.core.context_processors.static',
+        )
+    }
+}]
 
 EXTERNAL_APPS = [
     'django.contrib.admin',
@@ -54,6 +55,7 @@ EXTERNAL_APPS = [
     'generic_positions',
     'hvad',
     'user_media',
+    'easy_thumbnails',
 ]
 
 INTERNAL_APPS = [
@@ -62,7 +64,6 @@ INTERNAL_APPS = [
 ]
 
 INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
-COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS + ['compat$']
 
 SECRET_KEY = 'foobar'
 

@@ -1,6 +1,6 @@
 """Just an empty models file to let the testrunner recognize this as app."""
 from django.conf import settings
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes import fields
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
@@ -39,7 +39,7 @@ class Review(models.Model):
     # GFK 'reviewed_item'
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    reviewed_item = generic.GenericForeignKey('content_type', 'object_id')
+    reviewed_item = fields.GenericForeignKey('content_type', 'object_id')
 
     user = models.ForeignKey(
         getattr(settings, 'AUTH_USER_MODEL', 'auth.User'),
@@ -53,7 +53,7 @@ class Review(models.Model):
         blank=True,
     )
 
-    images = generic.GenericRelation(
+    images = fields.GenericRelation(
         'user_media.UserMediaImage',
     )
 
@@ -80,7 +80,7 @@ class Review(models.Model):
         null=True, blank=True,
     )
     extra_object_id = models.PositiveIntegerField(null=True, blank=True)
-    extra_item = generic.GenericForeignKey(
+    extra_item = fields.GenericForeignKey(
         'extra_content_type', 'extra_object_id')
 
     class Meta:
@@ -231,7 +231,7 @@ class ReviewExtraInfo(models.Model):
     # GFK 'content_object'
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    content_object = fields.GenericForeignKey('content_type', 'object_id')
 
     class Meta:
         ordering = ['type']

@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+- prepared app for Django 1.9
+
 === 1.9.2 ===
 
 - Fixed REVIEW_FORM_CHOICE_WIDGET setting
