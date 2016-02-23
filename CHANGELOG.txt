@@ -1,5 +1,7 @@
 === (ongoing) ===
 
+=== 1.9.3 ===
+
 - prepared app for Django 1.9
 
 === 1.9.2 ===

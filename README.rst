@@ -45,8 +45,7 @@ Don't forget to migrate your database
 
 .. code-block:: bash
 
-    ./manage.py migrate review
-    ./manage.py migrate user_media
+    ./manage.py migrate
 
 
 Usage
@@ -60,8 +59,8 @@ Create a button and add some markup like:
 .. code-block:: html
 
     <a href="{% url "review_create" content_type='book' object_id=book.pk %}">{% trans "Review this book" %}</a>
-    
-    
+
+
 Ratings & Categories
 --------------------
 
