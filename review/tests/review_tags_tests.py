@@ -5,7 +5,7 @@ from django.test import TestCase
 from mixer.backend.django import mixer
 
 from ..templatetags import review_tags
-from test_app.models import WeatherCondition
+from .test_app.models import WeatherCondition
 
 
 class GetReviewsTestCase(TestCase):

@@ -9,7 +9,7 @@ from mixer.backend.django import mixer
 
 from .. import views
 from ..models import Review
-from test_app.models import WeatherCondition
+from .test_app.models import WeatherCondition
 
 
 class ReviewCreateViewTestCase(ViewRequestFactoryTestMixin, TestCase):

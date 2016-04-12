@@ -4,6 +4,7 @@ from django.contrib.contenttypes import fields
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext, ugettext_lazy as _
 
 from hvad.models import TranslatableModel, TranslatedFields
@@ -17,6 +18,7 @@ DEFAULT_CHOICES = (
 )
 
 
+@python_2_unicode_compatible
 class Review(models.Model):
     """
     Represents a user review, which includes free text and images.
@@ -86,7 +88,7 @@ class Review(models.Model):
     class Meta:
         ordering = ['-creation_date']
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0} - {1}'.format(self.reviewed_item, self.get_user())
 
     # TODO: Add magic to get ReviewExtraInfo content objects here
@@ -150,7 +152,7 @@ class Review(models.Model):
 
         # calculate the total average of all categories
         total_average = 0
-        for category, category_average in category_averages.iteritems():
+        for category, category_average in category_averages.items():
             total_average += category_average
         if not len(category_averages):
             return (False, False)
@@ -198,6 +200,7 @@ class Review(models.Model):
         return True
 
 
+@python_2_unicode_compatible
 class ReviewExtraInfo(models.Model):
     """
     Model to add any extra information to a review.
@@ -236,10 +239,11 @@ class ReviewExtraInfo(models.Model):
     class Meta:
         ordering = ['type']
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0} - {1}'.format(self.review, self.type)
 
 
+@python_2_unicode_compatible
 class RatingCategory(TranslatableModel):
     """
     Represents a rating category.
@@ -273,7 +277,7 @@ class RatingCategory(TranslatableModel):
         question=models.CharField(max_length=512, blank=True, null=True),
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.lazy_translation_getter('name', 'Untranslated')
 
     @property
@@ -301,6 +305,7 @@ class RatingCategory(TranslatableModel):
         return int(list(self.get_choices())[0][0])
 
 
+@python_2_unicode_compatible
 class RatingCategoryChoice(TranslatableModel):
     """
     Defines an optional choice for a `RatingCategory`.
@@ -333,7 +338,7 @@ class RatingCategoryChoice(TranslatableModel):
         ),
     )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.lazy_translation_getter('label',
                                             self.ratingcategory.identifier)
 
@@ -341,6 +346,7 @@ class RatingCategoryChoice(TranslatableModel):
         ordering = ('-value', )
 
 
+@python_2_unicode_compatible
 class Rating(models.Model):
     """
     Represents a rating for one rating category.
@@ -373,5 +379,5 @@ class Rating(models.Model):
     class Meta:
         ordering = ['category', 'review']
 
-    def __unicode__(self):
+    def __str__(self):
         return '{0}/{1} - {2}'.format(self.category, self.review, self.value)

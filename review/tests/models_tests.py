@@ -5,7 +5,7 @@ from django.utils.timezone import now, timedelta
 
 from mixer.backend.django import mixer
 
-from test_app.models import WeatherCondition
+from .test_app.models import WeatherCondition
 
 
 class ReviewTestCase(TestCase):

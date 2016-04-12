@@ -1,12 +1,5 @@
 django
-django-nose
-coverage
-django-coverage
-ipdb
-flake8
-fabric
-mixer
-mock
 django-user-media
+django-hvad
 Pillow
 django-libs

@@ -1,5 +1,5 @@
 Django Review
-============
+=============
 
 A reusable Django app that lets users write reviews for any model
 

@@ -47,7 +47,7 @@ def render_category_averages(obj, normalize_to=100):
     category_averages = {}
     for review in reviews:
         review_category_averages = review.get_category_averages(normalize_to)
-        for category, average in review_category_averages.iteritems():
+        for category, average in review_category_averages.items():
             if category not in category_averages:
                 category_averages[category] = review_category_averages[
                     category]
@@ -55,7 +55,7 @@ def render_category_averages(obj, normalize_to=100):
                 category_averages[category] += review_category_averages[
                     category]
     if reviews and category_averages:
-        for category, average in category_averages.iteritems():
+        for category, average in category_averages.items():
             category_averages[category] = \
                 category_averages[category] / models.Rating.objects.filter(
                     category=category, value__isnull=False,

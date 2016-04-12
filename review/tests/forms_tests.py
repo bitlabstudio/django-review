@@ -73,7 +73,7 @@ class ReviewFormTestCase(TestCase):
                 'review.RatingCategoryChoiceTranslation',
                 language_code='en-us', ratingcategory=self.rating_category,
                 value=i, label=str(i)).master)
-            expected_choices.append((unicode(i), unicode(i)))
+            expected_choices.append((u'{}'.format(i), u'{}'.format(i)))
 
         """
         Disabled.
