@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.9.5 ===
+
+- Fixed rating category choice admin
+
 === 1.9.4 ===
 
 - prepared app for Python 3.5

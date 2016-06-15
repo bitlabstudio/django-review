@@ -22,6 +22,7 @@ class ReviewExtraInfoAdmin(admin.ModelAdmin):
 
 class ReviewCategoryChoiceAdmin(TranslatableAdmin):
     list_display = ['ratingcategory', 'value', 'get_label']
+    list_select_related = []
 
     def get_label(self, obj):
         return obj.label
