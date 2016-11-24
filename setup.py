@@ -38,6 +38,7 @@ def read(fname):
     except IOError:
         return ''
 
+
 setup(
     name="django-review",
     version=app.__version__,

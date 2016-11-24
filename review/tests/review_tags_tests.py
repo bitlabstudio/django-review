@@ -80,6 +80,14 @@ class RenderCategoryAveragesTestCase(TestCase):
             reviewed_item=self.reviewed_item)
 
     def test_tag(self):
+        expected_value = {
+            'reviewed_item': self.reviewed_item,
+            'category_averages': {},
+        }
+        self.assertEqual(
+            review_tags.render_category_averages(self.reviewed_item, 5),
+            expected_value)
+
         self.rating = mixer.blend(
             'review.Rating', review=self.review, value='2')
         expected_value = {
