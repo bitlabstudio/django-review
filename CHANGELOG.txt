@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.9.6 ===
+
+- Only aggregating category_averages if there are any for the given review
+
 === 1.9.5 ===
 
 - Fixed rating category choice admin
