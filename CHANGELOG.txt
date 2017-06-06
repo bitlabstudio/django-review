@@ -1,5 +1,9 @@
 === (ongoing) ===
 
+=== 1.9.7 ===
+
+- Renamed content type variable in create view
+
 === 1.9.6 ===
 
 - Only aggregating category_averages if there are any for the given review

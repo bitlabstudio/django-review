@@ -80,14 +80,14 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
     def dispatch(self, request, *args, **kwargs):
         # Check, if content type exists
         try:
-            self.content_type = ContentType.objects.get(
+            self.ctype = ContentType.objects.get(
                 model=kwargs.get('content_type'))
         except ContentType.DoesNotExist:
             raise Http404
 
         # Check, if reviewed item exists
         try:
-            self.reviewed_item = self.content_type.get_object_for_this_type(
+            self.reviewed_item = self.ctype.get_object_for_this_type(
                 pk=kwargs.get('object_id'))
         except ObjectDoesNotExist:
             raise Http404
@@ -98,7 +98,7 @@ class ReviewCreateView(ReviewViewMixin, CreateView):
             if getattr(settings, 'REVIEW_AVOID_MULTIPLE_REVIEWS', False):
                 try:
                     old_review = Review.objects.filter(
-                        user=request.user, content_type=self.content_type,
+                        user=request.user, content_type=self.ctype,
                         object_id=kwargs.get('object_id'))[0]
                 except IndexError:
                     pass
