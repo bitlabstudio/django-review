@@ -1,5 +1,14 @@
 === (ongoing) ===
 
+=== 1.10.0 ===
+
+- Adds missing migrations
+
+=== 1.9.7 ===
+
+- Renamed content type variable in create view
+
+
 === 1.9.7 ===
 
 - Renamed content type variable in create view
