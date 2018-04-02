@@ -48,7 +48,7 @@ setup(
     platforms=['OS Independent'],
     keywords='django, app, reusable, review, rating, voting',
     author='Daniel Kaufhold',
-    author_email='daniel.kaufhold.com',
+    author_email='daniel.kaufhold@bitlabstudio.com',
     url="https://github.com/bitmazk/django-review",
     packages=find_packages(),
     include_package_data=True,
